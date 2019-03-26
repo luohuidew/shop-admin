@@ -15,8 +15,12 @@ export default {
       'name',
       'roles'
     ])
+  },
+  created() {
+    console.log(this.$store.getters.roles, 2222)
   }
 }
+
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
