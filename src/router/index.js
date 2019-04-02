@@ -37,6 +37,68 @@ export const constantRouterMap = [
       component: () => import('@/views/dashboard/index')
     }]
   },
+  {
+    path: '/shopManage',
+    component: Layout,
+    redirect: '/shopManage/creatShop',
+    name: 'shopManage',
+    meta: { title: '店铺管理', icon: 'example' },
+    children: [
+      {
+        hidden: true,
+        path: 'creatShop',
+        name: 'creatShop',
+        component: () => import('@/views/shopManage/creatShop/index'),
+        meta: { title: '创建店铺', icon: 'tree' }
+      },
+      {
+        hidden: true,
+        path: 'preViewShop',
+        name: 'preViewShop',
+        component: () => import('@/views/shopManage/preViewShop/index'),
+        meta: { title: '店铺预览', icon: 'tree' }
+      }
+    ]
+  },
+  {
+    path: '/goodsManage',
+    component: Layout,
+    redirect: '/goodsManage/selectGood',
+    name: 'goodsManage',
+    meta: { title: '商品管理', icon: 'example' },
+    children: [
+      {
+        hidden: true,
+        path: 'selectGood',
+        name: 'selectGood',
+        component: () => import('@/views/goodsManage/selectGood/index'),
+        meta: { title: '选择商品', icon: 'tree' }
+      },
+      {
+        hidden: true,
+        path: 'pubGood',
+        name: 'pubGood',
+        component: () => import('@/views/goodsManage/pubGood/index'),
+        meta: { title: '发布商品', icon: 'tree' }
+      }
+    ]
+  },
+  {
+    path: '/incomeManage',
+    component: Layout,
+    redirect: '/incomeManage/settlement',
+    name: 'incomeManage',
+    meta: { title: '收益管理', icon: 'example' },
+    children: [
+      {
+        hidden: true,
+        path: 'settlement',
+        name: 'settlement',
+        component: () => import('@/views/incomeManage/settlement/index'),
+        meta: { title: '收益结算', icon: 'tree' }
+      }
+    ]
+  },
 
   {
     path: '/example',
@@ -59,20 +121,6 @@ export const constantRouterMap = [
       }
     ]
   },
-
-  {
-    path: '/form',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        name: 'Form',
-        component: () => import('@/views/form/index'),
-        meta: { title: 'Form', icon: 'form' }
-      }
-    ]
-  },
-
   {
     path: '/nested',
     component: Layout,

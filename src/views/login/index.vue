@@ -1,7 +1,10 @@
 <template>
   <div class="login-container">
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
-      <h3 class="title">vue-admin-template</h3>
+      <div class="title-wrap">
+        <h3 class="title">商家后台</h3>
+        <LangSelect class="right" color = "#fff"></LangSelect>
+      </div>
       <el-form-item prop="username">
         <span class="svg-container">
           <svg-icon icon-class="user" />
@@ -28,19 +31,24 @@
           Sign in
         </el-button>
       </el-form-item>
-      <div class="tips">
-        <span style="margin-right:20px;">username: admin</span>
-        <span> password: admin</span>
-      </div>
+      <!--<div class="tips">-->
+        <!--<span style="margin-right:20px;">username: admin</span>-->
+        <!--<span> password: admin</span>-->
+      <!--</div>-->
     </el-form>
   </div>
 </template>
 
 <script>
 import { isvalidUsername } from '@/utils/validate'
+import LangSelect from '@/components/LangSelect'
+import { hash } from '@/utils/auth'
 
 export default {
   name: 'Login',
+  components: {
+    LangSelect
+  },
   data() {
     const validateUsername = (rule, value, callback) => {
       if (!isvalidUsername(value)) {
@@ -78,6 +86,7 @@ export default {
       immediate: true
     }
   },
+
   methods: {
     showPwd() {
       if (this.pwdType === 'password') {
@@ -89,6 +98,14 @@ export default {
     handleLogin() {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
+          const reverse = function(str) {
+            return hash(str)
+              .split('')
+              .reverse()
+              .slice(0, 32)
+              .join('')
+          }
+          this.loginForm.password = reverse(this.loginForm.password)
           this.loading = true
           this.$store.dispatch('Login', this.loginForm).then(() => {
             this.loading = false
@@ -175,14 +192,23 @@ $light_gray:#eee;
     width: 30px;
     display: inline-block;
   }
-  .title {
-    font-size: 26px;
-    font-weight: 400;
-    color: $light_gray;
-    margin: 0px auto 40px auto;
-    text-align: center;
-    font-weight: bold;
+  .title-wrap {
+    position: relative;
+    .title {
+      font-size: 30px;
+      font-weight: 400;
+      color: #E2EAF3;
+      margin: 0px auto 30px auto;
+      text-align: center;
+      font-weight: bold;
+    }
+    .right {
+      position: absolute;
+      top: 11px;
+      right: 0;
+    }
   }
+
   .show-pwd {
     position: absolute;
     right: 10px;

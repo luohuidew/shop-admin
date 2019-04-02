@@ -1,7 +1,7 @@
 <template>
   <el-dropdown trigger="click" class="international" @command="handleSetLanguage">
     <div>
-      <svg-icon class-name="international-icon" icon-class="language" />
+      <svg-icon :style="{color}" class-name="international-icon" icon-class="language" />
     </div>
     <el-dropdown-menu slot="dropdown">
       <el-dropdown-item :disabled="language==='zh'" command="zh">
@@ -21,6 +21,7 @@ export default {
       return this.$store.getters.language
     }
   },
+  props: ['color'],
   methods: {
     handleSetLanguage(lang) {
       this.$i18n.locale = lang
@@ -33,3 +34,8 @@ export default {
   }
 }
 </script>
+<style rel="stylesheet/scss" lang="scss" scoped>
+  .logom{
+    color: #fff;
+  }
+</style>

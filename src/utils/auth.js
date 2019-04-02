@@ -1,4 +1,5 @@
 import Cookies from 'js-cookie'
+import { sha256 } from 'js-sha256'
 
 const TokenKey = 'vue_admin_template_token'
 
@@ -12,4 +13,8 @@ export function setToken(token) {
 
 export function removeToken() {
   return Cookies.remove(TokenKey)
+}
+
+export function hash(str) {
+  return sha256(str)
 }

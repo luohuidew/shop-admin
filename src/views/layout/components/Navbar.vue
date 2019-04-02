@@ -7,8 +7,13 @@
     </div>
     <el-dropdown class="avatar-container" trigger="click">
       <div class="avatar-wrapper">
-        <img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar">
-        <i class="el-icon-caret-bottom"/>
+        <span class="svg-container">
+          <svg-icon icon-class="user" />
+        </span>
+        <div class="username">
+          namesuser
+          <i class="el-icon-caret-bottom"/>
+        </div>
       </div>
       <el-dropdown-menu slot="dropdown" class="user-dropdown">
         <router-link class="inlineBlock" to="/">
@@ -76,32 +81,33 @@ export default {
     color: red;
   }
   .avatar-container {
-    height: 50px;
+    height: 40px;
     display: inline-block;
     position: absolute;
-    right: 135px;
+    right: 65px;
+    padding-right: 10px;
+    top: 5px;
+    border-right: 1px solid #E2EAF3;
     .avatar-wrapper {
+      display: flex;
+      align-content: center;
       cursor: pointer;
+      justify-content: center;
+      align-items: center;
+      flex-direction:column;
       margin-top: 5px;
-      position: relative;
       line-height: initial;
-      .user-avatar {
-        width: 40px;
-        height: 40px;
-        border-radius: 10px;
+      .svg-container {
+        display: block;
       }
       .el-icon-caret-bottom {
-        position: absolute;
-        right: -20px;
-        top: 25px;
-        font-size: 12px;
       }
     }
   }
 }
 .right-menu {
   float: right;
-  margin-right: 200px;
+  margin-right: 30px;
   height: 100%;
   line-height: 50px;
 
