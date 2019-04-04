@@ -1,31 +1,38 @@
 <template>
-  <div class="select-container">
+  <div class="select-container"
+       v-loading.fullscreen.lock="gloablLoading"
+       element-loading-text="loading"
+       element-loading-spinner="el-icon-loading"
+       element-loading-background="rgba(0, 0, 0, 0.8)">
     <step :num="1"/>
-    <search @serch = "serch"/>
+    <search :serch-datas = "serchData" @serch = "serch"/>
     <div class="tabel">
       <div class="top">
         <div class="title">推荐</div>
-        <el-checkbox v-model="allChecked">全选</el-checkbox>
+        <el-checkbox v-model="allChecked" @change="AllSlectChange">全选</el-checkbox>
       </div>
-      <div class="wrap">
+      <div
+        v-loading="loading"
+        class="wrap"
+      >
         <ul>
-          <li v-for="(item,index) in 12" :class="{selected: item.selected}">
+          <li v-for="(item) in goodList" :key="item.sku_id" class="selected">
             <div class="royalty">
-              20%<br>盈利
+              {{ item.profit }}%<br>盈利
             </div>
-            <img src="@/assets/img/test.png" alt="">
-            <p>Icons Print T-shirtIcons Print T-shirtIcons Print T-shirtIcons Print T-shirt</p>
+            <img :src="item.cover_img" alt="">
+            <p>{{ item.title }}</p>
             <div class="bottom">
               <div class="left">
                 <div class="type">
-                  <img src="@/assets/img/test.png" alt="">
+                  <span>{{ item.tag_names[0] }}</span>
                 </div>
                 <div class="price">
-                  $54
+                  ${{ item.alone_price }}
                 </div>
               </div>
               <div class="right">
-                <el-checkbox v-model="allChecked"/>
+                <el-checkbox v-model="item.selected" :disabled = "item.in_store" @change = "selectChange(item)" />
               </div>
             </div>
           </li>
@@ -35,14 +42,14 @@
         <el-pagination
           :layout= "pagination.layout"
           :total= "pagination.total"
-          :page-sizes="pagination.pageSizes"
+          :page-size="pagination.pageSize"
           :current-page="pagination.currentPage"
           background
           @current-change = "handlePageChange"
           @prev-click = "handlePageChange"
           @next-click = "handlePageChange"
         />
-        <el-button type="primary" @click="pubgoods">已选择5个商品</el-button>
+        <el-button type="primary" @click="pubgoods">已选择{{ selectAllSize }}个商品</el-button>
       </div>
     </div>
   </div>
@@ -51,6 +58,8 @@
 <script>
 import step from '@/components/step/index'
 import search from './component/search'
+import APIcreateShop from '@/api/shop'
+import { getStoreId } from '@/utils/auth'
 
 export default {
   components: {
@@ -59,27 +68,139 @@ export default {
   },
   data() {
     return {
+      gloablLoading: false,
+      loading: false,
+      selectAllGood: {},
+      goodList: [],
       allChecked: false,
+      serchData: {},
       pagination: {
         layout: 'prev, pager, next',
-        total: 1000,
-        pageSizes: 20,
-        currentPage: 3
-      }
+        total: 18,
+        pageSize: 18,
+        currentPage: 1
+      },
+      serchCache: {},
+      selectAllSize: 0
     }
   },
-  created() {},
+  created() {
+    this.getType()
+  },
   methods: {
-    serch(val) {
-      alert(val)
+    AllSlectChange(val) {
+      if (val) {
+        this.goodList.map((item) => {
+          item.selected = true
+        })
+      } else {
+        this.goodList.map((item) => {
+          item.selected = false
+        })
+      }
+      this.selectChange()
     },
-    dataLoad() {},
+    selectChange() { // 存储选中的值
+      const currentpage = this.pagination.currentPage
+      let ary = this.goodList.map((item) => {
+        if (item.selected) {
+          return item.sku_id
+        } else {
+          return false
+        }
+      })
+      ary = ary.filter((items) => {
+        return items !== false
+      })
+      const currenpageSelectId = this.selectAllGood[currentpage]
+      console.log(currenpageSelectId)
+      let copyId = []
+      if (currenpageSelectId instanceof Array) {
+        copyId = [...currenpageSelectId]
+      }
+      this.selectAllGood[currentpage] = [...copyId, ary]
+      console.log(this.selectAllGood,33)
+      if (ary.length === this.goodList.length) { // 判断是否全选
+        this.allChecked = true
+      } else {
+        this.allChecked = false
+      }
+      this.selectAllSize = this.getAllSelectId().length
+    },
+    getType() { // 获取分类页
+      this.gloablLoading = true
+      APIcreateShop.getGoodsType({ store_id: getStoreId() }).then((res) => {
+        this.serchData = res.data
+        const datas = res.data.recommend
+        const allId = this.getAllSelectId()
+        datas.forEach((item) => {
+          item.selected = false // 添加未选中状态
+          if (allId.includes(item.sku_id)) {
+            item.selected = true // 已选择的选中
+          }
+        })
+        this.goodList = datas
+        this.gloablLoading = false
+      }).catch(() => {
+        this.gloablLoading = false
+      })
+    },
+    getAllSelectId() { // 获取选中商品的id
+      const keys = Object.keys(this.selectAllGood)
+      let array = []
+      keys.forEach((currentpage) => {
+        array = [...array, ...this.selectAllGood[currentpage]]
+      })
+      return Array.from(new Set([...array]))
+    },
+    serch(obj) { // 搜索商品接口
+      obj.store_id = getStoreId()
+      obj.page = this.pagination.currentPage
+      this.serchCache = obj
+      const allId = this.getAllSelectId()
+      this.loading = true
+      APIcreateShop.getGoodsList(obj).then((res) => {
+        this.loading = false
+        const datas = res.data
+        this.pagination.total = datas.totle
+        datas.data.forEach((item) => {
+          item.selected = false // 添加未选中状态
+          if (allId.includes(item.sku_id)) {
+            item.selected = true // 已选择的选中
+          }
+        })
+        this.goodList = datas.data
+      }).catch(() => {
+        this.loading = false
+      })
+    },
+    dataLoad() {
+
+    },
     handlePageChange(val) {
       this.pagination.currentPage = val
-      this.dataLoad()
+      this.serch(this.serchCache)
     },
     pubgoods() {
-      this.$router.push({ name: 'pubGood' })
+      const allId = this.getAllSelectId()
+      if (allId.length === 0) {
+        this.$message({
+          type: 'info',
+          message: '请先选择商品'
+        })
+        return
+      }
+      const param = {
+        sku_id: allId,
+        store_id: getStoreId()
+      }
+      APIcreateShop.pubgoods(param).then((res) => {
+        this.selectAllGood = {}
+        this.selectAllSize = 0
+        this.serch(this.serchCache)
+        // this.$router.push({ name: 'pubGood' })
+        alert('添加成功')
+      })
     }
   }
 }
@@ -111,6 +232,9 @@ export default {
         width: 100%;
         overflow: hidden;
         li {
+          /*&:hover {*/
+            /*border:1px solid rgba(155,155,155,1);*/
+          /*}*/
           position: relative;
           float: left;
           height: 247px;
@@ -153,6 +277,10 @@ export default {
             line-height: 16px;
             overflow: hidden;
             margin: 6px 0px;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;//规定几行显示省略号
+            -webkit-box-orient: vertical;
           }
           .bottom{
             height: 36px;
@@ -165,12 +293,22 @@ export default {
               flex-direction: column;
               justify-content:space-between;
               .type {
-                img {
+                width: 125px;
+                height: 16px;
+                overflow: hidden;
+                span {
+                  display: inline-block;
+                  white-space: nowrap;
                   height: 16px;
-                  width: 68px;
+                  margin-top: -3px;
+                  padding: 1px 3px;
+                  font-size: 12px;
+                  color: #ffff;
+                  background: linear-gradient(to right, #F77062 , #FE5196); /* 标准的语法 */
                 }
               }
               .price {
+                margin-top: 7px;
                 font-size:12px;
                 font-weight:bold;
                 color:rgba(39,52,67,1);

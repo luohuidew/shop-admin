@@ -1,5 +1,6 @@
 export default {
   route: {
+    goodsManage: 'dianpuguanli',
     dashboard: 'Dashboard',
     introduction: 'Introduction',
     documentation: 'Documentation',
@@ -73,7 +74,7 @@ export default {
     github: 'Github',
     theme: 'Theme',
     size: 'Global Size',
-    switchLang: 'English',
+    switchLang: 'English'
   },
   login: {
     title: 'Login Form',

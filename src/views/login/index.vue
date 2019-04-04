@@ -1,15 +1,18 @@
 <template>
   <div class="login-container">
+    <div class="logo">
+      <img src="@/assets/img/logo.png" width="234" alt="">
+    </div>
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
       <div class="title-wrap">
         <h3 class="title">商家后台</h3>
-        <LangSelect class="right" color = "#fff"></LangSelect>
+        <LangSelect class="right" color = "#fff"/>
       </div>
-      <el-form-item prop="username">
+      <el-form-item prop="email">
         <span class="svg-container">
           <svg-icon icon-class="user" />
         </span>
-        <el-input v-model="loginForm.username" name="username" type="text" auto-complete="on" placeholder="username" />
+        <el-input v-model="loginForm.email" name="email" type="text" auto-complete="on" placeholder="email" />
       </el-form-item>
       <el-form-item prop="password">
         <span class="svg-container">
@@ -31,18 +34,15 @@
           Sign in
         </el-button>
       </el-form-item>
-      <!--<div class="tips">-->
-        <!--<span style="margin-right:20px;">username: admin</span>-->
-        <!--<span> password: admin</span>-->
-      <!--</div>-->
     </el-form>
   </div>
 </template>
 
 <script>
-import { isvalidUsername } from '@/utils/validate'
+// import { isvalidUsername } from '@/utils/validate'
 import LangSelect from '@/components/LangSelect'
-import { hash } from '@/utils/auth'
+import { hash, setStoreId, setStoreState } from '@/utils/auth'
+import apiLogin from '@/api/login'
 
 export default {
   name: 'Login',
@@ -50,27 +50,27 @@ export default {
     LangSelect
   },
   data() {
-    const validateUsername = (rule, value, callback) => {
-      if (!isvalidUsername(value)) {
-        callback(new Error('请输入正确的用户名'))
-      } else {
-        callback()
-      }
-    }
+    // const validateUsername = (rule, value, callback) => {
+    //   if (!isvalidUsername(value)) {
+    //     callback(new Error('请输入正确的邮箱'))
+    //   } else {
+    //     callback()
+    //   }
+    // }
     const validatePass = (rule, value, callback) => {
-      if (value.length < 5) {
-        callback(new Error('密码不能小于5位'))
+      if (value.length < 1) {
+        callback(new Error('密码不能小于1位'))
       } else {
         callback()
       }
     }
     return {
       loginForm: {
-        username: 'admin',
-        password: 'admin'
+        email: '888@666.com',
+        password: ''
       },
       loginRules: {
-        username: [{ required: true, trigger: 'blur', validator: validateUsername }],
+        // email: [{ required: true, trigger: 'blur', validator: validateUsername }],
         password: [{ required: true, trigger: 'blur', validator: validatePass }]
       },
       loading: false,
@@ -98,18 +98,35 @@ export default {
     handleLogin() {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
-          const reverse = function(str) {
-            return hash(str)
-              .split('')
-              .reverse()
-              .slice(0, 32)
-              .join('')
+          // const reverse = function(str) {
+          //   return hash(str)
+          //     .split('')
+          //     .reverse()
+          //     .slice(0, 32)
+          //     .join('')
+          // }
+          const param = {
+            email: this.loginForm.email,
+            password: hash(this.loginForm.password)
           }
-          this.loginForm.password = reverse(this.loginForm.password)
           this.loading = true
-          this.$store.dispatch('Login', this.loginForm).then(() => {
+          this.$store.dispatch('Login', param).then(() => {
             this.loading = false
-            this.$router.push({ path: this.redirect || '/' })
+            apiLogin.getStoreState().then((res) => {
+              console.log(res)
+              const status = res.data.status
+              if (res.data.store_id) {
+                setStoreId(res.data.store_id)
+              }
+              if (status) {
+                setStoreState(status)
+              }
+              if (status === 1 || status === 2 || status === 3) { // 1注册商户成功,店铺信息未添加 // 3未选品 // 2店铺关闭
+                this.$router.push({ path: '/' })
+              } else { // 有商品
+                this.$router.push({ path: this.redirect || '/goodsManage/pubGood' })
+              }
+            })
           }).catch(() => {
             this.loading = false
           })
@@ -129,6 +146,10 @@ $light_gray:#eee;
 
 /* reset element-ui css */
 .login-container {
+  .logo {
+    margin-top: 105px;
+    margin-left: 113px;
+  }
   .el-input {
     display: inline-block;
     height: 47px;

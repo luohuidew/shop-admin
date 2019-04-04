@@ -2,10 +2,10 @@
   <div class="creatshop-container">
     <el-tabs v-model="activeName">
       <el-tab-pane label="PC端" name="pc">
-        <Pc></Pc>
+        <Pc/>
       </el-tab-pane>
       <el-tab-pane label="移动端" name="h5">
-        <Mobile></Mobile>
+        <Mobile/>
       </el-tab-pane>
     </el-tabs>
   </div>

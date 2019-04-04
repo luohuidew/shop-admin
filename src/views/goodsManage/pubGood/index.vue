@@ -13,22 +13,22 @@
         <div class="title">
           <span>
             时间排序
-          <i class="el-icon-d-caret"></i>
+            <i class="el-icon-d-caret"/>
           </span>
           <span>
             金额排序
-          <i class="el-icon-d-caret"></i>
+            <i class="el-icon-d-caret"/>
           </span>
         </div>
         <div class="list">
           <el-row>
-            <el-col :span="12" v-for="(indx) in 9" :key="index">
+            <el-col v-for="(index) in 9" :span="12" :key="index">
               <div class="cotent">
                 <div class="img-good">
                   <div class="royalty">
                     20%<br>盈利
                   </div>
-                  <img class='' src="@/assets/img/test.png" alt="">
+                  <img class="" src="@/assets/img/test.png" alt="">
                 </div>
 
                 <div class="right">
@@ -42,12 +42,12 @@
                   </div>
                   <div class="btn">
                     <el-button size="mini" type="primary" class="padding">置顶</el-button>
-                    <span><i class="el-icon-delete  color" ></i></span>
+                    <span><i class="el-icon-delete  color" /></span>
                   </div>
                 </div>
               </div>
             </el-col>
-            <el-col :span="12"><div class="grid-content bg-purple-light"></div></el-col>
+            <el-col :span="12"><div class="grid-content bg-purple-light"/></el-col>
           </el-row>
         </div>
       </div>
@@ -76,9 +76,9 @@
       <span class="dialog-cotent">恭喜您，发布成功，可到App或者pc端查看<br>
         填写收款信息，有助于您的收款</span>
       <span slot="footer" class="dialog-footer">
-    <el-button type="primary" @click="addMoneyInfo">去填写</el-button>
-    <el-button type="primary" @click="dialogPusVisible = false">关闭</el-button>
-  </span>
+        <el-button type="primary" @click="addMoneyInfo">去填写</el-button>
+        <el-button type="primary" @click="dialogPusVisible = false">关闭</el-button>
+      </span>
     </el-dialog>
   </div>
 </template>
@@ -88,7 +88,7 @@ import step from '@/components/step/index'
 
 export default {
   components: {
-    step,
+    step
   },
   data() {
     return {

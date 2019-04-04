@@ -16,12 +16,17 @@
 
 <script>
 export default {
+  props: {
+    color: {
+      type: String,
+      default: ' '
+    }
+  },
   computed: {
     language() {
       return this.$store.getters.language
     }
   },
-  props: ['color'],
   methods: {
     handleSetLanguage(lang) {
       this.$i18n.locale = lang

@@ -1,5 +1,6 @@
 export default {
   route: {
+    goodsManage: '商品管理中',
     dashboard: '首页',
     introduction: '简述',
     documentation: '文档',
@@ -73,7 +74,7 @@ export default {
     github: '项目地址',
     theme: '换肤',
     size: '布局大小',
-    switchLang: '中文简体',
+    switchLang: '中文简体'
   },
   login: {
     title: '系统登录',

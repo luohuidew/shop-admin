@@ -53,6 +53,13 @@ export const constantRouterMap = [
       },
       {
         hidden: true,
+        path: 'editShop',
+        name: 'editShop',
+        component: () => import('@/views/shopManage/creatShop/editShop'),
+        meta: { title: '编辑店铺', icon: 'tree' }
+      },
+      {
+        hidden: true,
         path: 'preViewShop',
         name: 'preViewShop',
         component: () => import('@/views/shopManage/preViewShop/index'),

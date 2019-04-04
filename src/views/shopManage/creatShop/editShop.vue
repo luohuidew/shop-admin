@@ -1,5 +1,5 @@
 <template>
-  <ShopInfo :creat = "true"/>
+  <ShopInfo :creat = "false"/>
 </template>
 
 <script>
@@ -24,18 +24,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.creatshop-container{
-  width: 700px;
-  display: table;
-  margin: 20px auto;
-  .but{
-    width: 220px;
+  .creatshop-container{
+    width: 700px;
+    display: table;
+    margin: 20px auto;
+    .but{
+      width: 220px;
+    }
+    & /deep/ .el-form-item__label {
+      font-weight:400;
+      font-size:12px;
+      color:rgba(39,52,67,1);
+    }
   }
-  & /deep/ .el-form-item__label {
-    font-weight:400;
-    font-size:12px;
-    color:rgba(39,52,67,1);
-  }
-}
 </style>
 

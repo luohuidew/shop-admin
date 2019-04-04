@@ -1,13 +1,10 @@
 import request from '@/utils/request'
 
-export function login(username, password) {
+export function login(obj) {
   return request({
-    url: '/user/login',
+    url: 'pop/user/login',
     method: 'post',
-    data: {
-      username,
-      password
-    }
+    data: obj
   })
 }
 
@@ -25,3 +22,14 @@ export function logout() {
     method: 'post'
   })
 }
+
+export default {
+  getStoreState(obj = {}) {
+    return request({
+      url: 'pop/user/storeState',
+      method: 'post',
+      data: obj
+    })
+  }
+}
+
