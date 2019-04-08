@@ -2,7 +2,16 @@
   <div class="wraps">
     <div class="h5">
       <header>
-        <img class="bg" src="@/assets/img/test.png" alt="">
+        <div class="bg">
+         <img src="@/assets/img/test.png" alt="" class="shop-bg">
+          <div class="avte">
+            <img src="@/assets/img/test.png" alt="">
+            <p>
+              <span>Amour</span><br>
+              <span class="time">Store Since 01 Jan 2019</span>
+            </p>
+          </div>
+        </div>
         <div class="info">
           <img src="@/assets/img/production.png" alt=""> Products: 3474
         </div>
@@ -80,6 +89,39 @@ export default {
         padding-bottom: 15px;
         .bg {
           width: 100%;
+          min-height: 130px;
+          position: relative;
+          .shop-bg{
+            width: 100%;
+            min-height: 130px;
+          }
+          .avte{
+            position: absolute;
+            bottom: 10px;
+            width: 100%;
+            height: 50px;
+            img {
+              width: 50px;
+              height: 50px;
+              border-radius: 50%;
+              display: inline-block;
+              margin-right: 10px;
+              margin-left: 20px;
+              vertical-align: middle;
+            }
+            p{
+              color: #fff;
+              height: 40px;
+              display: inline-block;
+              font-size:14px;
+              font-weight:bold;
+              vertical-align: middle;
+              line-height: 20px;
+              .time{
+                font-weight: 400;
+              }
+            }
+          }
         }
         .info{
           /*&:after{*/

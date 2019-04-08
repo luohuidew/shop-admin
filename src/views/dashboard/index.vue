@@ -25,16 +25,26 @@
 
 <script>
 // import { mapGetters } from 'vuex'
-import { getStoreState } from '@/utils/auth'
+import { setStoreState } from '@/utils/auth'
+import APIcreateShop from '@/api/shop'
+import { getStoreId } from '@/utils/auth'
+import apiLogin from '@/api/login'
 
 export default {
   name: 'Dashboard',
   data() {
     return {
-      storeIdState: getStoreState()
+      storeIdState: ''
     }
   },
   created() {
+    apiLogin.getStoreState().then((res) => { // 获取最新店铺状态
+      const status = res.data.status
+      this.storeIdState = status.toString()
+      if (status) {
+        setStoreState(status)
+      }
+    })
   },
   computed: {
     // ...mapGetters([
@@ -44,7 +54,13 @@ export default {
   },
   methods: {
     openShop() {
-      this.$router.push({ name: 'pubGood' })
+      APIcreateShop.releaseStore({ store_id: getStoreId() }).then(res => {
+        this.$message({
+          message: '店铺开启成功，请继续添加商品',
+          type: 'success'
+        })
+        this.$router.push({ name: 'pubGood' })
+      })
     },
     creatShop() {
       this.$router.push({ name: 'creatShop' })

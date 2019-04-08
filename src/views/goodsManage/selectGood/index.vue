@@ -4,7 +4,7 @@
        element-loading-text="loading"
        element-loading-spinner="el-icon-loading"
        element-loading-background="rgba(0, 0, 0, 0.8)">
-    <step :num="1"/>
+    <step :num="1" v-if="storeState==='1' || storeState=='3'" />
     <search :serch-datas = "serchData" @serch = "serch"/>
     <div class="tabel">
       <div class="top">
@@ -32,7 +32,7 @@
                 </div>
               </div>
               <div class="right">
-                <el-checkbox v-model="item.selected" :disabled = "item.in_store" @change = "selectChange(item)" />
+                <el-checkbox v-model="item.selected" :disabled = "item.in_store" @change = "selectChange" />
               </div>
             </div>
           </li>
@@ -59,7 +59,7 @@
 import step from '@/components/step/index'
 import search from './component/search'
 import APIcreateShop from '@/api/shop'
-import { getStoreId } from '@/utils/auth'
+import { getStoreId, getStoreState } from '@/utils/auth'
 
 export default {
   components: {
@@ -68,6 +68,7 @@ export default {
   },
   data() {
     return {
+      storeState: getStoreState(),
       gloablLoading: false,
       loading: false,
       selectAllGood: {},
@@ -88,6 +89,9 @@ export default {
     this.getType()
   },
   methods: {
+    selectGoodChange(item) {
+      item.selected = !item.selected
+    },
     AllSlectChange(val) {
       if (val) {
         this.goodList.map((item) => {
@@ -112,14 +116,21 @@ export default {
       ary = ary.filter((items) => {
         return items !== false
       })
-      const currenpageSelectId = this.selectAllGood[currentpage]
-      console.log(currenpageSelectId)
+      const currenpageSelectId = this.CURRENTSelectId
       let copyId = []
       if (currenpageSelectId instanceof Array) {
         copyId = [...currenpageSelectId]
       }
-      this.selectAllGood[currentpage] = [...copyId, ary]
-      console.log(this.selectAllGood,33)
+      const ids = [...new Set([...copyId, ...ary])]
+      this.goodList.forEach((item) => {
+        if (!item.selected) {
+          const index = ids.indexOf(item.sku_id)
+          if (index !== -1) {
+            ids.splice(index, 1)
+          }
+        }
+      })
+      this.selectAllGood[currentpage] = [...ids]
       if (ary.length === this.goodList.length) { // 判断是否全选
         this.allChecked = true
       } else {
@@ -154,6 +165,7 @@ export default {
       return Array.from(new Set([...array]))
     },
     serch(obj) { // 搜索商品接口
+      this.CURRENTSelectId = this.selectAllGood[this.pagination.currentPage]
       obj.store_id = getStoreId()
       obj.page = this.pagination.currentPage
       this.serchCache = obj
@@ -182,6 +194,7 @@ export default {
       this.serch(this.serchCache)
     },
     pubgoods() {
+      this.$router.push({ name: 'pubGood' })
       const allId = this.getAllSelectId()
       if (allId.length === 0) {
         this.$message({
@@ -198,8 +211,11 @@ export default {
         this.selectAllGood = {}
         this.selectAllSize = 0
         this.serch(this.serchCache)
-        // this.$router.push({ name: 'pubGood' })
-        alert('添加成功')
+        this.$message({
+          type: 'success',
+          message: '商品添加成功'
+        })
+        this.$router.push({ name: 'pubGood' })
       })
     }
   }
@@ -209,7 +225,7 @@ export default {
 <style lang="scss" scoped>
 .select-container {
   width: 1100px;
-  margin: 0px auto;
+  margin: 30px auto;
 }
   .tabel {
     margin-top:30px ;
@@ -296,6 +312,7 @@ export default {
                 width: 125px;
                 height: 16px;
                 overflow: hidden;
+                white-space: nowrap;
                 span {
                   display: inline-block;
                   white-space: nowrap;

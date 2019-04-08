@@ -32,6 +32,7 @@ export default {
   .step {
     width: 550px;
     margin: 30px auto;
+    margin-bottom: 0px;
     & /deep/ .is-process .el-step__icon.is-text{
       background:#273443;
       color: #273443;

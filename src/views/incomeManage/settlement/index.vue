@@ -3,19 +3,19 @@
     <div class="wrap">
       <div class="herader">
         <div class="num">
-          <span>$200.00</span>
+          <span>${{ datas.today_price }}</span>
           <br>今日交易金额
         </div>
         <div class="num">
-          <span>$20.00</span>
+          <span>${{ datas.today_profit }}</span>
           <br>今日收益
         </div>
         <div class="num">
-          <span>$999.00</span>
+          <span>${{ datas.profit }}</span>
           <br>累计收益
         </div>
         <div class="num">
-          <span>$999.00</span>
+          <span>${{ datas.valid_profit }}</span>
           <br>可领取收益
         </div>
       </div>
@@ -27,10 +27,13 @@
       </div>
       <div class="activ">
         <span> 收款方式：</span>
-        <img src="@/assets/img/paypal.png" alt="">
-        <span>123@456.com</span>
-        <el-button type="primary" class="edit" @click="editpaypal" >修改</el-button>
-        <el-button type="primary" class="edit" @click="addpaypal" >添加账号</el-button>
+        <template v-if="datas.pay">
+          <img src="@/assets/img/paypal.png" alt="" v-if="datas.pay_method === 1" >
+          <span>{{ datas.pay_account }}</span>
+        </template>
+
+        <el-button type="primary" class="edit" v-if ="datas.pay" @click="editpaypal" >修改</el-button>
+        <el-button type="primary" class="edit" v-else @click="addpaypal" >添加账号</el-button>
       </div>
       <p class="end">每个月可以提交一次结算申请，我们将会在7天内给您打款。如有问题，您可联系info@weget.com</p>
     </div>
@@ -78,6 +81,8 @@
 </template>
 
 <script>
+  import APIincome from '@/api/income'
+  import { getStoreId } from '@/utils/auth'
 
 export default {
   components: {
@@ -106,6 +111,7 @@ export default {
     return {
       dialogPayPalVisible: false,
       dialogApplayVisible: false,
+      datas: {},
       paypalForm: {
         email: '',
         checkemail: ''
@@ -122,7 +128,9 @@ export default {
 
     }
   },
-  created() {},
+  created() {
+    this.dataLoad()
+  },
   methods: {
     dialogApplay() {
       this.dialogApplayVisible = false
@@ -130,7 +138,28 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          alert('submit!')
+          const param = {
+            method: 1,
+            account: this.paypalForm.email,
+            store_id: getStoreId()
+          }
+          if (this.EDITAPPLY) {
+            APIincome.updatePayMethod(param).then((res) => {
+              this.$message({
+                type: 'success',
+                message: '修改成功'
+              })
+              this.dataLoad()
+            })
+          } else {
+            APIincome.AddPayMethod(param).then((res) => {
+              this.$message({
+                type: 'success',
+                message: '添加成功'
+              })
+              this.dataLoad()
+            })
+          }
         } else {
           console.log('error submit!!')
           return false
@@ -141,14 +170,25 @@ export default {
       this.dialogPayPalVisible = false
       this.$refs[formName].resetFields()
     },
-    dataLoad() {},
+    dataLoad() {
+      APIincome.storeStatistics({ store_id: getStoreId() }).then((res) => {
+        this.datas = res.data
+      })
+    },
     apply() {
-      this.dialogApplayVisible = true
+      APIincome.storeSettle({ store_id: getStoreId() }).then((res) => {
+        if (res.data.status === 1) {
+          this.dialogApplayVisible = true
+        }
+      })
     },
     editpaypal() {
+      this.EDITAPPLY = true
       this.dialogPayPalVisible = true
+      this.paypalForm.email = this.datas.pay_account
     },
     addpaypal() {
+      this.EDITAPPLY = false
       this.dialogPayPalVisible = true
     }
   }
@@ -229,7 +269,7 @@ export default {
     margin-top: 20px;
   }
   .dialog-apply {
-    font-size:24px;
+    font-size:16px;
     font-weight:600;
     color:rgba(39,52,67,1);
   }

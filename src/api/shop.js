@@ -24,12 +24,19 @@ export default {
       data: obj
     })
   },
-  // 店铺state
-  state(data = {}) {
+  // 获取店铺信息
+  getData(obj = {}) {
     return request({
-      url: '/admin/store/addPage',
-      method: 'get',
-      params: data
+      url: '/pop/store/edit',
+      method: 'post',
+      data: obj
+    })
+  },
+  updateShop(obj = {}) {
+    return request({
+      url: 'pop/store/update',
+      method: 'post',
+      data: obj
     })
   },
   getGoodsType(obj = {}) { // 获得分类
@@ -49,6 +56,41 @@ export default {
   pubgoods(obj = {}) { // 添加选择的商品到店铺
     return request({
       url: 'pop/product/addSpuToStore',
+      method: 'post',
+      data: obj
+    })
+  },
+  getShopgoods(obj = {}) { // 获取店铺商品
+    return request({
+      url: 'pop/product/storeProductList',
+      method: 'post',
+      data: obj
+    })
+  },
+  setGoodTop(obj = {}) { // 商品置顶
+    return request({
+      url: 'pop/product/spuOfstick',
+      method: 'post',
+      data: obj
+    })
+  },
+  deleteGood(obj = {}) { // 商品下架
+    return request({
+      url: 'pop/product/deleteSpu',
+      method: 'post',
+      data: obj
+    })
+  },
+  releaseStore(obj = {}) { // 发布店铺及商品
+    return request({
+      url: 'pop/store/releaseStore',
+      method: 'post',
+      data: obj
+    })
+  },
+  closeStore(obj = {}) { // 关闭店铺
+    return request({
+      url: 'pop/store/closeStore',
       method: 'post',
       data: obj
     })

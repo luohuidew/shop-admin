@@ -1,61 +1,73 @@
 <template>
   <div class="select-container">
-    <step :num="2"/>
+    <step v-if="storeState==='1' || storeState==='3'" :num="2"/>
     <div class="good-wrap">
       <div class="top">
         <div class="title">商品列表</div>
         <div class="des">
           <span>共30个商品，最多可添加120个商品</span>
-          <el-button type="primary" size="small">添加商品</el-button>
+          <el-button type="primary" size="small" @click="addGoods">添加商品</el-button>
         </div>
       </div>
-      <div class="wrap">
+      <div class="wrap"
+           v-loading="loadingGood"
+           element-loading-text="拼命加载中"
+           element-loading-spinner="el-icon-loading"
+           element-loading-background="rgba(0, 0, 0, 0.4)">
         <div class="title">
-          <span>
-            时间排序
-            <i class="el-icon-d-caret"/>
-          </span>
-          <span>
-            金额排序
-            <i class="el-icon-d-caret"/>
-          </span>
+          <el-radio-group v-model="tabPosition">
+            <el-radio-button label="Already" size="small" >已发布</el-radio-button>
+            <el-radio-button label="noready" size="small" >未发布</el-radio-button>
+          </el-radio-group>
+          <div>
+            <span @click="timeSort">
+              时间排序
+              <i class="el-icon-d-caret"/>
+            </span>
+            <span @click="priceSort">
+              金额排序
+              <i class="el-icon-d-caret"/>
+            </span>
+          </div>
         </div>
         <div class="list">
           <el-row>
-            <el-col v-for="(index) in 9" :span="12" :key="index">
+            <el-col v-for="(item) in goodsList" :span="12" :key="item.sku_id">
               <div class="cotent">
                 <div class="img-good">
                   <div class="royalty">
-                    20%<br>盈利
+                    {{ item.profit }}%<br>盈利
                   </div>
-                  <img class="" src="@/assets/img/test.png" alt="">
+                  <img :src="item.cover_img" class="" alt="">
                 </div>
 
                 <div class="right">
-                  <div class="ti">Vneck Opera Print Ov
+                  <div class="ti">{{ item.title }}
                   </div>
                   <div class="type">
-                    <img src="@/assets/img/test.png" alt="">
+                    <span v-for="tag in item.tag_names">{{ tag }}</span>
                   </div>
                   <div class="price">
-                    $26
+                    ${{ item.alone_price }}
                   </div>
                   <div class="btn">
-                    <el-button size="mini" type="primary" class="padding">置顶</el-button>
-                    <span><i class="el-icon-delete  color" /></span>
+                    <el-button size="mini" type="primary" class="padding" @click="setTopDood(item)">置顶</el-button>
+                    <span @click="deleteDood(item)"><i class="el-icon-delete  color" /></span>
                   </div>
                 </div>
               </div>
             </el-col>
-            <el-col :span="12"><div class="grid-content bg-purple-light"/></el-col>
           </el-row>
         </div>
+        <p v-if="goodsList.length === 0" class="nogoods">
+          还没有商品
+        </p>
       </div>
       <div class="page">
         <el-pagination
           :layout= "pagination.layout"
           :total= "pagination.total"
-          :page-sizes="pagination.pageSizes"
+          :page-size="pagination.pageSize"
           :current-page="pagination.currentPage"
           background
           @current-change = "handlePageChange"
@@ -85,6 +97,8 @@
 
 <script>
 import step from '@/components/step/index'
+import APIcreateShop from '@/api/shop'
+import { getStoreId, getStoreState } from '@/utils/auth'
 
 export default {
   components: {
@@ -92,24 +106,132 @@ export default {
   },
   data() {
     return {
+      storeState: getStoreState(),
+      loadingGood: true,
+      tabPosition: 'noready',
+      goodsListEd: [], // 已发布商品列表
+      goodsListNo: [], // 未发布商品列表
+      goodsList: [],
       dialogPusVisible: false,
       pagination: {
         layout: 'prev, pager, next',
-        total: 1000,
-        pageSizes: 20,
-        currentPage: 3
+        total: 100,
+        pageSize: 18,
+        currentPage: 1
+      },
+      timeSortSate: 'desc',
+      priceSortSate: 'desc'
+    }
+  },
+  watch: {
+    tabPosition: function(newval) {
+      if (newval === 'noready') {
+        this.initData()
+      } else {
+        this.initData()
       }
     }
   },
-  created() {},
+  created() {
+    this.initData({ down: 1 }) //  未发布
+  },
   methods: {
+    timeSort() {
+      const param = {
+        sort: this.timeSortSate,
+        order: 'create_time'
+      }
+      this.initData(param)
+      if (this.timeSortSate === 'asc') {
+        this.timeSortSate = 'desc'
+      } else {
+        this.timeSortSate = 'asc'
+      }
+    },
+    priceSort() {
+      const param = {
+        sort: this.priceSortSate,
+        order: 'price'
+      }
+      this.initData(param)
+      if (this.priceSortSate === 'asc') {
+        this.priceSortSate = 'desc'
+      } else {
+        this.priceSortSate = 'asc'
+      }
+    },
+    setTopDood(item) {
+      const param = {
+        store_id: getStoreId(),
+        sku_id: item.sku_id
+      }
+      APIcreateShop.setGoodTop(param).then((res) => {
+        this.$message({
+          type: 'success',
+          message: '置顶成功'
+        })
+        this.initData(this.CACHEOBJ)
+      }).catch(() => {
+      })
+    },
+    deleteDood(item) {
+      const param = {
+        store_id: getStoreId(),
+        sku_id: item.sku_id
+      }
+      APIcreateShop.deleteGood(param).then((res) => {
+        this.$message({
+          type: 'success',
+          message: '删除成功'
+        })
+        this.initData(this.CACHEOBJ)
+      }).catch(() => {
+      })
+    },
+    initData(obj = {}) {
+      const param = {
+        store_id: getStoreId(),
+        page: this.pagination.currentPage,
+        down: obj.down,
+        sort: obj.sort,
+        order: obj.order
+      }
+      this.CACHEOBJ = { ...param }
+      if (this.tabPosition === 'noready') { // 未发布
+        param.down = 1
+      } else {
+        param.down = 2
+      }
+      this.loadingGood = true
+      APIcreateShop.getShopgoods(param).then((res) => {
+        this.loadingGood = false
+        const data = res.data
+        if (obj.down === 1) {
+          this.goodsListNo = data
+          this.goodsList = data
+        } else {
+          this.goodsListEd = data
+          this.goodsList = data
+        }
+      }).catch(() => {
+        this.loadingGood = false
+        console.log(param)
+      })
+    },
+    addGoods() {
+      this.$router.push({ name: 'selectGood' })
+    },
     dataLoad() {},
     handlePageChange(val) {
       this.pagination.currentPage = val
-      this.dataLoad()
+      this.initData(this.CACHEOBJ)
     },
     pubgoods() {
-      this.dialogPusVisible = true
+      APIcreateShop.releaseStore({ store_id: getStoreId() }).then((res) => {
+        this.dialogPusVisible = true
+        this.dataLoad()
+      }).catch(() => {
+      })
     },
     perView() {
       this.$router.push({ name: 'preViewShop' })
@@ -146,10 +268,11 @@ export default {
       }
     }
     .wrap {
+      min-height: 200px;
       .title {
         height: 40px;
         background:rgba(225,225,225,1);
-        justify-content: flex-end;
+        justify-content: space-between;
         display: flex;
         align-items: center;
         font-weight:400;
@@ -213,10 +336,20 @@ export default {
               font-weight:400;
               color:rgba(39,52,67,1);
             }
-            .type >img{
+            .type {
+              overflow: hidden;
               margin-top: 8px;
-              display: inline-block;
-              height: 16px;
+              height: 20px;
+                span {
+                  display: inline-block;
+                  white-space: nowrap;
+                  margin-top: -3px;
+                  padding: 2px 3px;
+                  font-size: 12px;
+                  color: #ffff;
+                  margin-right: 10px;
+                  background: linear-gradient(to right, #F77062 , #FE5196); /* 标准的语法 */
+                }
             }
             .price {
               margin-top: 8px;
@@ -250,6 +383,11 @@ export default {
       display: flex;
       justify-content: space-between;
       padding-bottom: 100px;
+    }
+    .nogoods{
+      line-height: 50px;
+      text-align: center;
+      color: #d3dce6;
     }
   }
 .select-container .dialog-cotent {

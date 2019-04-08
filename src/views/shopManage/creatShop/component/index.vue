@@ -9,19 +9,20 @@
         <el-input v-model="form.desc" type="textarea"/>
       </el-form-item>
       <el-form-item label="店铺Logo">
-        <imgUp @upload = "successImg($event, 'logo')" />
+        <imgUp :propURl = "form.logo" @upload = "successImg($event, 'logo')" />
       </el-form-item>
       <el-form-item label="PC店铺背景" >
-        <imgUp @upload = "successImg($event, 'pc_background_url')" />
+        <imgUp :propURl = "form.pc_background_url" @upload = "successImg($event, 'pc_background_url')" />
       </el-form-item>
       <el-form-item label="App店铺背景" >
-        <imgUp @upload = "successImg($event, 'mobile_background_url')" />
+        <imgUp :propURl = "form.mobile_background_url" @upload = "successImg($event, 'mobile_background_url')" />
       </el-form-item>
       <el-form-item label="销售数据店铺展示">
-        <el-switch v-model="form.is_help_order" :true-label="1" false-label="2" />
+        <el-switch v-model="form.is_help_order" :active-value="1" :inactive-value="2" />
       </el-form-item>
-      <el-form-item label="开店时间" prop="open_time">
-        <el-date-picker v-model="form.open_time" type="date" placeholder="选择日期" style="width: 100%;"/>
+      <el-form-item label="开店时间" >
+        <el-date-picker v-model="form.open_time"  type="date" placeholder="选择日期"
+          style="width: 100%;"/>
       </el-form-item>
       <el-form-item label="inns_url">
         <el-input v-model="form.inns_url"/>
@@ -51,14 +52,23 @@
         <el-input v-model="form.city"/>
       </el-form-item>
       <el-form-item label="州" prop="state">
-        <el-input v-model="form.state"/>
+        <el-select v-model="form.state" placeholder="请选择">
+          <el-option
+            v-for="item in MapState"
+            :key="item.state"
+            :label="item.state"
+            :value="item.state">
+          </el-option>
+        </el-select>
       </el-form-item>
       <el-form-item label="邮编" prop="zipcode">
         <el-input v-model="form.zipcode"/>
       </el-form-item>
       <el-form-item >
-        <el-button type="primary" class="but" @click="submitForm('ruleForm')">确定</el-button>
-        <el-button type="primary" class="but" @click="form.logo=22">测试图片上传</el-button>
+        <el-button v-if="creat === true" type="primary" class="but" @click="submitForm('ruleForm')">确定</el-button>
+        <el-button v-if="creat === false" type="primary" class="but" @click="submitForm('ruleForm')">修改</el-button>
+        <el-button v-if="creat === false && !closeStoreState" type="primary" class="but" @click="closeStore">关闭店铺</el-button>
+        <el-button v-if="creat === false && closeStoreState" type="primary" class="but" @click="openStore">开启店铺</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -68,8 +78,7 @@
 import imgUp from '@/components/imgUp'
 import step from '@/components/step/index'
 import APIcreateShop from '@/api/shop'
-import { setStoreId } from '@/utils/auth'
-
+import { setStoreId, getStoreId } from '@/utils/auth'
 
 export default {
   components: {
@@ -78,13 +87,13 @@ export default {
   },
   props: {
     creat: {
-      type: Boolean,
-      default: false
+      type: Boolean
     }
   },
   data() {
     return {
-      site: [],
+      MapState: [],
+      closeStoreState: false,
       form: {
         name: '',
         desc: '',
@@ -127,9 +136,9 @@ export default {
         // applogo: [
         //   { required: true, message: '请上传图片', trigger: 'change' }
         // ],
-        open_time: [
-          { type: 'date', required: true, message: '请选择日期', trigger: 'change' }
-        ],
+        // open_time: [
+        //   { type: 'date', required: true, message: '请选择日期'}
+        // ],
         contacts: [
           { required: true, message: '请输入信息', trigger: 'blur' }
         ],
@@ -149,19 +158,40 @@ export default {
     }
   },
   created() {
-    // this.init_state()
+    if (!this.creat) {
+      this.init_state()
+    }
   },
   methods: {
-    // init_state() {
-    //   APIcreateShop.state().then(res => {
-    //     this.site = res.data
-    //   })
-    // },
+    closeStore() {
+      APIcreateShop.closeStore({ store_id: getStoreId() }).then(res => {
+        this.$message({
+          message: '店铺关闭成功',
+          type: 'success'
+        })
+        this.closeStoreState = true
+      })
+    },
+    openStore() {
+      APIcreateShop.releaseStore({ store_id: getStoreId() }).then(res => {
+        this.$message({
+          message: '店铺开启成功',
+          type: 'success'
+        })
+        this.closeStoreState = false
+      })
+    },
+    init_state() {
+      APIcreateShop.getData({ store_id: getStoreId() }).then(res => {
+        this.form = res.data.info
+        this.MapState = res.data.address
+        this.closeStoreState = res.data.info.is_closed === 1 // is_closed =1 关闭 is_closed =2 不关闭
+      })
+    },
     successImg(urls, key) {
       this.form[key] = urls
     },
     submitForm(formName) {
-      this.$router.push({ name: 'selectGood' })
       if (!this.form.logo) {
         this.$message({
           message: '请上传图片',
@@ -183,10 +213,23 @@ export default {
       }
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          APIcreateShop.createShop(this.form).then((res) => {
-            setStoreId(res.data.store_id)
-            this.$router.push({ name: 'selectGood' })
-          })
+          if (this.creat) { // 第一次创建店铺
+            APIcreateShop.createShop(this.form).then((res) => {
+              setStoreId(res.data.store_id)
+              this.$message({
+                message: '店铺创建成功',
+                type: 'success'
+              })
+              this.$router.push({ name: 'selectGood' })
+            })
+          } else { // 编辑店铺
+            APIcreateShop.updateShop(this.form).then((res) => {
+              this.$message({
+                message: '修改成功',
+                type: 'success'
+              })
+            })
+          }
         } else {
           console.log('error submit!!')
           return false

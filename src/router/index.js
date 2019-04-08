@@ -40,7 +40,7 @@ export const constantRouterMap = [
   {
     path: '/shopManage',
     component: Layout,
-    redirect: '/shopManage/creatShop',
+    redirect: '/shopManage/editShop',
     name: 'shopManage',
     meta: { title: '店铺管理', icon: 'example' },
     children: [

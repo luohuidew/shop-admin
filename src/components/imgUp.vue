@@ -18,7 +18,7 @@
     <div v-show="imgshow" class="img">
       <!--<img src="" alt="">-->
       <img :src="originUrl" class="upload-success-img">
-      <i @click="deleteImg" class="el-icon-error icons"/>
+      <i class="el-icon-error icons" @click="deleteImg"/>
     </div>
   </div>
 </template>
@@ -28,18 +28,28 @@
 // import { BASE_API } from '@/utils/config.js'
 const baseUrl = process.env.BASE_API
 export default {
+  props: {
+    propURl: {
+      type: String,
+      default: ''
+    }
+  },
   data() {
     return {
       loading: false,
-      base_url: `${baseUrl}/pop/upload/uploadImage`,
+      imgshow: false,
       originUrl: '',
-      imgshow: false
+      base_url: `${baseUrl}/pop/upload/uploadImage`,
     }
   },
   computed: {
-    // base_url() {
-    //   return '?width='
-    // }
+
+  },
+  watch: {
+    propURl(url) {
+      this.imgshow = url !== ''
+      this.originUrl = url
+    }
   },
   methods: {
     deleteImg() {
