@@ -1,23 +1,23 @@
 <template>
   <div class="creatshop-container">
     <step v-if="creat" :num="0" />
-    <el-form ref="ruleForm" :rules="rules" :model="form" label-width="140px" label-position="left" >
-      <el-form-item label="店铺名称" prop="name">
+    <el-form ref="ruleForm" :rules="rules" :model="form" label-width="200px" label-position="left" >
+      <el-form-item :label="$t('shopCreate.name')" prop="name">
         <el-input v-model="form.name"/>
       </el-form-item>
-      <el-form-item label="Slogan" prop="desc">
+      <el-form-item :label="$t('shopCreate.Slogan')" prop="desc">
         <el-input v-model="form.desc" type="textarea"/>
       </el-form-item>
-      <el-form-item label="店铺Logo">
+      <el-form-item :label="$t('shopCreate.logo')">
         <imgUp :propURl = "form.logo" @upload = "successImg($event, 'logo')" />
       </el-form-item>
-      <el-form-item label="PC店铺背景" >
+      <el-form-item :label="$t('shopCreate.pc_background_url')">
         <imgUp :propURl = "form.pc_background_url" @upload = "successImg($event, 'pc_background_url')" />
       </el-form-item>
-      <el-form-item label="App店铺背景" >
+      <el-form-item :label="$t('shopCreate.mobile_background_url')" >
         <imgUp :propURl = "form.mobile_background_url" @upload = "successImg($event, 'mobile_background_url')" />
       </el-form-item>
-      <el-form-item label="销售数据店铺展示">
+      <el-form-item :label="$t('shopCreate.is_help_order')" >
         <el-switch v-model="form.is_help_order" :active-value="1" :inactive-value="2" />
       </el-form-item>
       <el-form-item label="开店时间" >

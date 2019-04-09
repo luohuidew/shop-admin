@@ -18,7 +18,7 @@
       <el-dropdown-menu slot="dropdown" class="user-dropdown">
         <router-link class="inlineBlock" to="/">
           <el-dropdown-item>
-            Home
+            {{ $t('navbar.dashboard') }}
           </el-dropdown-item>
         </router-link>
         <el-dropdown-item divided>

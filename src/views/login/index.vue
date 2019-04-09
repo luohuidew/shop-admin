@@ -5,7 +5,7 @@
     </div>
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
       <div class="title-wrap">
-        <h3 class="title">商家后台</h3>
+        <h3 class="title">{{ $t('login.title') }}</h3>
         <LangSelect class="right" color = "#fff"/>
       </div>
       <el-form-item prop="email">
@@ -31,7 +31,7 @@
       </el-form-item>
       <el-form-item>
         <el-button :loading="loading" type="primary" style="width:100%;" @click.native.prevent="handleLogin">
-          Sign in
+          {{ $t('login.logIn') }}
         </el-button>
       </el-form-item>
     </el-form>
