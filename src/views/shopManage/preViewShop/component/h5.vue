@@ -36,6 +36,9 @@
             </div>
           </li>
         </ul>
+        <div class="nogood" v-if="goodList.length === 0">
+          您还没有商品
+        </div>
       </section>
     </div>
     <footer>
@@ -170,6 +173,12 @@ export default {
       .good-wrap {
         background:rgba(243,243,243,1);
         padding: 0 15px;
+        .nogood {
+          line-height: 50px;
+          font-size: 14px;
+          color: #99a9bf;
+          text-align: center;
+        }
         h3 {
           font-size:18px;
           font-weight:bold;

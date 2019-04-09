@@ -29,6 +29,10 @@ export function getStoreId(id) {
   return Cookies.get(StoreId)
 }
 
+export function removeStoreId() {
+  Cookies.remove(StoreId)
+}
+
 export function getStoreState() {
   return Cookies.get(StoreState)
 }

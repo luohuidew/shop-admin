@@ -52,7 +52,7 @@
           @prev-click = "handlePageChange"
           @next-click = "handlePageChange"
         />
-        <el-button type="primary" @click="pubgoods">已选择{{ selectAllSize }}个商品</el-button>
+        <el-button type="primary" :loading="butLoadingPub" @click="pubgoods">已选择{{ selectAllSize }}个商品</el-button>
       </div>
     </div>
   </div>
@@ -71,6 +71,7 @@ export default {
   },
   data() {
     return {
+      butLoadingPub: false,
       storeState: getStoreState(),
       gloablLoading: false,
       loading: false,
@@ -134,10 +135,12 @@ export default {
         }
       })
       this.selectAllGood[currentpage] = [...ids]
-      if (ary.length === this.goodList.length) { // 判断是否全选
-        this.allChecked = true
-      } else {
-        this.allChecked = false
+      if (this.goodList.length > 0) { // 去掉没有商品全选无法取消bug
+        if (ary.length === this.goodList.length) { // 判断是否全选
+          this.allChecked = true
+        } else {
+          this.allChecked = false
+        }
       }
       this.selectAllSize = this.getAllSelectId().length
     },
@@ -197,7 +200,6 @@ export default {
       this.serch(this.serchCache)
     },
     pubgoods() {
-      this.$router.push({ name: 'pubGood' })
       const allId = this.getAllSelectId()
       if (allId.length === 0) {
         this.$message({
@@ -210,15 +212,19 @@ export default {
         sku_id: allId,
         store_id: getStoreId()
       }
+      this.butLoadingPub = true
       APIcreateShop.pubgoods(param).then((res) => {
         this.selectAllGood = {}
         this.selectAllSize = 0
-        this.serch(this.serchCache)
+        // this.serch(this.serchCache)
         this.$message({
           type: 'success',
           message: '商品添加成功'
         })
+        this.butLoadingPub = false
         this.$router.push({ name: 'pubGood' })
+      }) .catch(() => {
+        this.butLoadingPub = false
       })
     }
   }

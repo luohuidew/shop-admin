@@ -14,7 +14,7 @@
     </div>
     <div class="content">
       <div class="label">
-        <div class="type-name">类目</div>
+        <div class="type-name">Category</div>
         <div class="type-conten">
           <dl>
             <dt v-for="(item) in serchData.category" :key="item.id">
@@ -42,7 +42,7 @@
         </div>
       </div>
       <div class="label">
-        <div class="type-name">brand</div>
+        <div class="type-name">Brand</div>
         <div class="type-conten">
           <dl>
             <dt v-for="(item, index) in serchData.brand" :key="index">
@@ -59,7 +59,7 @@
         </div>
       </div>
       <div class="label">
-        <div class="type-name">tag</div>
+        <div class="type-name">Tag</div>
         <div class="type-conten">
           <dl>
             <dt v-for="(item) in serchData.tag" :key="item.tag_id">
@@ -69,7 +69,7 @@
         </div>
       </div>
       <div class="bottom">
-        <el-button type="primary" size="small" @click="search">搜索</el-button>
+        <el-button type="primary" size="small" @click="search(false)">搜索</el-button>
         <el-button type="info" size="small" @click="resetStyle(serchData)">清空搜索条件</el-button>
       </div>
     </div>
@@ -222,6 +222,7 @@ export default {
 <style lang="scss" scoped>
 .cearch-wrap {
   .title {
+    margin-top: 30px;
     display: flex;
     height: 30px;
     /*border:1px solid red;*/

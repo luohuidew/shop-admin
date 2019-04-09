@@ -5,7 +5,7 @@
       <div class="top">
         <div class="title">商品列表</div>
         <div class="des">
-          <span>共30个商品，最多可添加120个商品</span>
+          <span>共{{goodsListLength}}个商品，最多可添加120个商品</span>
           <el-button type="primary" size="small" @click="addGoods">添加商品</el-button>
         </div>
       </div>
@@ -76,7 +76,7 @@
         />
         <div>
           <el-button type="primary" @click="perView">预览店铺</el-button>
-          <el-button type="primary" @click="pubgoods">发布商品到店铺</el-button>
+          <el-button v-show="tabPosition === 'noready'" type="primary" @click="pubgoods">发布商品到店铺</el-button>
         </div>
 
       </div>
@@ -98,6 +98,7 @@
 <script>
 import step from '@/components/step/index'
 import APIcreateShop from '@/api/shop'
+import APIincome from '@/api/income'
 import { getStoreId, getStoreState } from '@/utils/auth'
 
 export default {
@@ -107,11 +108,12 @@ export default {
   data() {
     return {
       storeState: getStoreState(),
-      loadingGood: true,
-      tabPosition: 'noready',
+      loadingGood: false,
+      tabPosition: 'Already',
       goodsListEd: [], // 已发布商品列表
       goodsListNo: [], // 未发布商品列表
       goodsList: [],
+      goodsListLength: 0,
       dialogPusVisible: false,
       pagination: {
         layout: 'prev, pager, next',
@@ -133,9 +135,15 @@ export default {
     }
   },
   created() {
-    this.initData({ down: 1 }) //  未发布
+    this.initData({ down: 2 }) //  已发布
+    this.shopInfo()
   },
   methods: {
+    shopInfo() {
+      APIincome.storeStatistics({ store_id: getStoreId() }).then((res) => {
+        this.INFOSHOP = res.data
+      })
+    },
     timeSort() {
       const param = {
         sort: this.timeSortSate,
@@ -170,7 +178,7 @@ export default {
           type: 'success',
           message: '置顶成功'
         })
-        this.initData(this.CACHEOBJ)
+        this.initData()
       }).catch(() => {
       })
     },
@@ -205,31 +213,39 @@ export default {
       this.loadingGood = true
       APIcreateShop.getShopgoods(param).then((res) => {
         this.loadingGood = false
-        const data = res.data
-        if (obj.down === 1) {
+        const data = res.data.data
+        const total = res.data.total
+        this.pagination.total = total
+        if (param.down === 1) {
           this.goodsListNo = data
           this.goodsList = data
         } else {
           this.goodsListEd = data
           this.goodsList = data
+          this.goodsListLength = total
         }
       }).catch(() => {
         this.loadingGood = false
-        console.log(param)
       })
     },
     addGoods() {
       this.$router.push({ name: 'selectGood' })
     },
-    dataLoad() {},
     handlePageChange(val) {
       this.pagination.currentPage = val
       this.initData(this.CACHEOBJ)
     },
     pubgoods() {
       APIcreateShop.releaseStore({ store_id: getStoreId() }).then((res) => {
-        this.dialogPusVisible = true
-        this.dataLoad()
+        if (this.INFOSHOP.pay) {
+          this.$message({
+            type: 'success',
+            message: '发布成功'
+          })
+          this.initData(this.CACHEOBJ)
+        } else {
+          this.dialogPusVisible = true
+        }
       }).catch(() => {
       })
     },

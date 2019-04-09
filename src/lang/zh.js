@@ -87,9 +87,6 @@ export default {
     logIn: '登录',
     username: '账号',
     password: '密码',
-    any: '随便填',
-    thirdparty: '第三方登录',
-    thirdpartyTips: '本地不能模拟，请结合自己业务进行模拟！！！'
   },
   documentation: {
     documentation: '文档',
@@ -107,5 +104,16 @@ export default {
     // confirm: '确定',
     // cancel: '取消'
   },
-
+  step: {
+    Store_preferences: '填写店铺信息',
+    Select_products: '选择商品',
+    Adjust_publish: '调整商品发布',
+    step_title: '欢迎来到Weget商家后台，仅需3步开启 ',
+    step_nogood_title: '店铺还没有商品',
+    step_close_title: '欢迎来到Weget商家后台，您的店铺已关闭',
+    step_havegood_title: '欢迎来到Weget商家后台，查看我的店铺',
+    but_addDoods: '添加商品',
+    but_openShop: '开启店铺',
+    but_goShop: '开启店铺',
+  }
 }

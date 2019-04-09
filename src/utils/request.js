@@ -63,6 +63,18 @@ service.interceptors.response.use(
           })
         })
       }
+      if (res.code === 1002 || res.code === 1003) { // 店铺id 错误或没有
+        MessageBox.confirm(
+          '您可能还没有店铺，无法访问',
+          '提示',
+          {
+            confirmButtonText: '确定',
+            type: 'warning'
+          }
+        ).then(() => {
+          window.location.href = '/'
+        })
+      }
       return Promise.reject('error')
     } else {
       return response.data

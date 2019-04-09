@@ -1,9 +1,9 @@
 <template>
   <div class="step">
     <el-steps :active="num" align-center finish-status="success" >
-      <el-step title="填写店铺信息"/>
-      <el-step title="选择商品"/>
-      <el-step title="调整商品发布"/>
+      <el-step :title="$t('step.Store_preferences')"/>
+      <el-step :title="$t('step.Select_products')"/>
+      <el-step :title="$t('step.Adjust_publish')"/>
     </el-steps>
   </div>
 </template>

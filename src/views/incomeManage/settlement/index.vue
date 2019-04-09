@@ -150,6 +150,7 @@ export default {
                 message: '修改成功'
               })
               this.dataLoad()
+              this.dialogPayPalVisible = false
             })
           } else {
             APIincome.AddPayMethod(param).then((res) => {
@@ -158,6 +159,7 @@ export default {
                 message: '添加成功'
               })
               this.dataLoad()
+              this.dialogPayPalVisible = false
             })
           }
         } else {

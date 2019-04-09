@@ -1,20 +1,20 @@
 <template>
   <div class="dashboard-container">
     <div v-if="storeIdState === '1'">
-      <h2>欢迎来到Weget商家后台，仅需3步开启 </h2>
-      <el-button type="primary" @click="creatShop">创建店铺</el-button>
+      <h2>{{ $t('step.step_title' )}}</h2>
+      <el-button type="primary" @click="creatShop">{{ $t('step.but_openShop')}}</el-button>
     </div>
     <div v-else-if="storeIdState === '3'">
-      <h2>店铺还没有商品</h2>
-      <el-button type="primary" @click="addDoods">添加商品</el-button>
+      <h2>{{ $t('step.step_nogood_title' )}}</h2>
+      <el-button type="primary" @click="addDoods">{{ $t('step.but_addDoods' )}}</el-button>
     </div>
     <div v-else-if="storeIdState === '2'">
-      <h2 >欢迎来到Weget商家后台，您的店铺已关闭</h2>
-      <el-button type="primary" @click="openShop">开启店铺</el-button>
+      <h2 >{{ $t('step.step_close_title' )}}</h2>
+      <el-button type="primary" @click="openShop">{{ $t('step.but_openShop')}}</el-button>
     </div>
     <div v-else>
-      <h2 >欢迎来到Weget商家后台，继续添加商品</h2>
-      <el-button type="primary" @click="addDoods">添加商品</el-button>
+      <h2 >{{ $t('step.step_havegood_title' )}}</h2>
+      <el-button type="primary" @click="goShop">{{ $t('step.but_goShop')}}</el-button>
     </div>
     <img src="@/assets/img/liucheng.jpg" class="liucheng" alt="开店流程图" >
     <!--<div class="dashboard-text">name2:{{ name }}</div>-->
@@ -56,11 +56,14 @@ export default {
     openShop() {
       APIcreateShop.releaseStore({ store_id: getStoreId() }).then(res => {
         this.$message({
-          message: '店铺开启成功，请继续添加商品',
+          message: '店铺开启成功，去往我的店铺',
           type: 'success'
         })
         this.$router.push({ name: 'pubGood' })
       })
+    },
+    goShop() {
+      this.$router.push({ name: 'pubGood' })
     },
     creatShop() {
       this.$router.push({ name: 'creatShop' })

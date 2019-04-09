@@ -58,20 +58,20 @@ export default {
     //   }
     // }
     const validatePass = (rule, value, callback) => {
-      if (value.length < 1) {
-        callback(new Error('密码不能小于1位'))
+      if (value.length < 0) {
+        callback(new Error('密码不能为空'))
       } else {
         callback()
       }
     }
     return {
       loginForm: {
-        email: '888@666.com',
+        email: '',
         password: ''
       },
       loginRules: {
-        // email: [{ required: true, trigger: 'blur', validator: validateUsername }],
-        password: [{ required: true, trigger: 'blur', validator: validatePass }]
+        email: [{ required: true, trigger: 'blur' }],
+        password: [{ required: true, trigger: 'blur' }]
       },
       loading: false,
       pwdType: 'password',

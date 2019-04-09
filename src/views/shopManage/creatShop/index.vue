@@ -4,7 +4,7 @@
 
 <script>
 import ShopInfo from './component/index'
-import { setStoreState } from '@/utils/auth'
+import { getStoreState } from '@/utils/auth'
 
 export default {
   components: {
@@ -12,7 +12,7 @@ export default {
   },
   data() {
     return {
-      creat: setStoreState() === '1'
+      creat: getStoreState() === '1'
     }
   },
   created() {

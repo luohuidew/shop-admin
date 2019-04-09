@@ -76,7 +76,7 @@ export default {
   },
   navbar: {
     logOut: 'Log Out',
-    dashboard: 'Dashboard',
+    dashboard: 'Home',
     switchLang: 'English'
   },
   login: {
@@ -84,9 +84,6 @@ export default {
     logIn: 'Sign in',
     username: 'Username',
     password: 'Password',
-    any: 'any',
-    thirdparty: 'Or connect with',
-    thirdpartyTips: 'Can not be simulated on local, so please combine you own business simulation! ! !'
   },
   shopCreate: {
     name: 'Store name',
@@ -95,5 +92,17 @@ export default {
     pc_background_url: 'Store background for website',
     mobile_background_url: 'Store background for App',
     is_help_order: 'Showing how many products your store sold',
+  },
+  step: {
+    Store_preferences: 'Store preferences',
+    Select_products: 'Select products',
+    Adjust_publish: 'Adjust and publish',
+    step_title: 'Welcome to WeGet Store Managemeng System! You are only 3 steps away from having your store!',
+    step_nogood_title: 'There are no products in the store yet…',
+    step_close_title: 'Welcome to WeGet Store Managemeng System!，Your shop is closed.',
+    step_havegood_title: 'Welcome to WeGet Store Managemeng System!，Open my shop',
+    but_addDoods: 'Add products',
+    but_openShop: 'Open your WeGet store',
+    but_goShop: 'Open your WeGet store'
   }
 }
