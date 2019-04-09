@@ -1,16 +1,21 @@
 <template>
-  <ShopInfo :creat = "true"/>
+  <ShopInfo :creat = "creat"/>
 </template>
 
 <script>
 import ShopInfo from './component/index'
+import { setStoreState } from '@/utils/auth'
 
 export default {
   components: {
     ShopInfo
   },
   data() {
-    return {}
+    return {
+      creat: setStoreState() === '1'
+    }
+  },
+  created() {
   },
   methods: {
     // onCancel() {

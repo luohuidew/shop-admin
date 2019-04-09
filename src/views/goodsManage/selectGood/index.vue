@@ -37,6 +37,9 @@
             </div>
           </li>
         </ul>
+        <div v-show="goodList.length === 0" class="nogood">
+          没有搜索到商品
+        </div>
       </div>
       <div class="page">
         <el-pagination
@@ -333,6 +336,11 @@ export default {
             }
           }
         }
+      }
+      .nogood{
+        color:#99a9bf;
+        line-height: 50px;
+        text-align: center;
       }
     }
     .page {

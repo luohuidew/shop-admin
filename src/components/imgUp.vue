@@ -47,8 +47,12 @@ export default {
   },
   watch: {
     propURl(url) {
-      this.imgshow = url !== ''
-      this.originUrl = url
+      if (!this.firstimg) { // 只要第一次传过来的值
+        this.firstimg = true
+        this.imgshow = url !== ''
+        this.originUrl = url
+      }
+
     }
   },
   methods: {

@@ -17,6 +17,13 @@ import request from '@/utils/request'
 // }
 
 export default {
+  getStates(obj = {}) { // 获取州市地址
+    return request({
+      url: 'pop/store/addPage',
+      method: 'post',
+      data: obj
+    })
+  },
   createShop(obj = {}) {
     return request({
       url: 'pop/store/create',
@@ -94,7 +101,13 @@ export default {
       method: 'post',
       data: obj
     })
+  },
+  getStoreInfo(obj = {}) { // 店铺预览
+    return request({
+      url: 'pop/store/getStoreInfo',
+      method: 'post',
+      data: obj
+    })
   }
-
 }
 

@@ -160,6 +160,10 @@ export default {
   created() {
     if (!this.creat) {
       this.init_state()
+    } else {
+      APIcreateShop.getStates().then(res => {
+        this.MapState = res.data
+      })
     }
   },
   methods: {

@@ -2,10 +2,10 @@
   <div class="creatshop-container">
     <el-tabs v-model="activeName">
       <el-tab-pane label="PC端" name="pc">
-        <Pc/>
+        <Pc :store-info = "storeInfo" :good-list = "goodList" />
       </el-tab-pane>
       <el-tab-pane label="移动端" name="h5">
-        <Mobile/>
+        <Mobile :store-info = "storeInfo" :good-list = "goodList" />
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -14,6 +14,9 @@
 <script>
 import Mobile from './component/h5'
 import Pc from './component/pc'
+import { getStoreId } from '@/utils/auth'
+import APIShop from '@/api/shop'
+
 export default {
   components: {
     Mobile,
@@ -21,10 +24,23 @@ export default {
   },
   data() {
     return {
-      activeName: 'pc'
+      activeName: 'pc',
+      storeInfo: {},
+      goodList: []
     }
   },
+  created() {
+    this.initStae()
+  },
   methods: {
+    initStae() {
+      APIShop.getStoreInfo({ store_id: getStoreId() }).then((res) => {
+        const data = res.data
+        this.storeInfo = data.store_info
+        this.goodList = data.store_list.data
+        console.log(this.storeInfo)
+      })
+    }
   }
 }
 </script>

@@ -3,36 +3,36 @@
     <div class="h5">
       <header>
         <div class="bg">
-         <img src="@/assets/img/test.png" alt="" class="shop-bg">
+         <img :src="storeInfo.mobile_background_url" alt="" class="shop-bg">
           <div class="avte">
-            <img src="@/assets/img/test.png" alt="">
+            <img :src="storeInfo.logo" alt="">
             <p>
-              <span>Amour</span><br>
-              <span class="time">Store Since 01 Jan 2019</span>
+              <span>{{ storeInfo.name }}</span><br>
+              <span class="time">{{ storeInfo.open_time }}</span>
             </p>
           </div>
         </div>
         <div class="info">
-          <img src="@/assets/img/production.png" alt=""> Products: 3474
+          <img src="@/assets/img/production.png" alt=""> Products: {{ storeInfo.total_num }}
         </div>
         <div class="info">
           <img src="@/assets/img/storeInfo.png" alt="">
-          <span> Fashion flows through the air and changes constantly with passing times. An approaching revolution can…</span>
+          <span>{{ storeInfo.desc }}</span>
         </div>
       </header>
       <section class="good-wrap">
         <h3>Daily Wow</h3>
         <ul>
-          <li v-for="(index) in 10" :key="index">
+          <li v-for="(item) in goodList" :key="item.sku_id">
             <div class="img">
-              <img src="@/assets/img/test.png" alt="">
+              <img :src="item.cover_img" alt="">
             </div>
-            <p>AOC Long Snowflake Earrings AOC Long Snowflake Earrings</p>
+            <p>{{ item.title }}</p>
             <div class="type">
-              <img src="@/assets/img/test.png" alt="">
+              <img  v-for="tag in item.show_tag" :src="tag.mask_bg_image" alt="">
             </div>
             <div class="price">
-              $12.90
+              ${{ item.market_price }}
             </div>
           </li>
         </ul>
@@ -46,6 +46,20 @@
 
 <script>
 export default {
+  props: {
+    goodList: {
+      type: Array,
+      default() {
+        return []
+      }
+    },
+    storeInfo: {
+      type: Object,
+      default() {
+        return {}
+      }
+    }
+  },
   components: {
   },
   data() {
@@ -196,9 +210,12 @@ export default {
             .type {
               padding: 0px 10px;
               height: 16px;
+              overflow: hidden;
               margin: 6px 0px;
               img {
                 height: 16px;
+                display: inline-block;
+                margin-right: 5px;
               }
             }
             .price {

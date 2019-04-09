@@ -1,30 +1,30 @@
 <template>
   <div class="pc">
     <header>
-      <img class="bg" src="@/assets/img/test.png" alt="">
+      <img :src="storeInfo.pc_background_url" class="bg" alt="">
       <div class="info">
         <div class="logo">
-          <img src="@/assets/img/test.png" alt="">
+          <img :src="storeInfo.logo" alt="">
         </div>
         <div class="des">
-          <span>MAISON</span> <br>
-          Store since Mar 31 2019
+          <span>{{ storeInfo.name }}</span> <br>
+          {{ storeInfo.open_time }}
         </div>
       </div>
     </header>
     <section class="good-wrap">
       <h3>Daily Wow</h3>
       <ul>
-        <li v-for="(index) in 10" :key="index">
+        <li v-for="(item) in goodList" :key="item.sku_id">
           <div class="img">
-            <img src="@/assets/img/test.png" alt="">
+            <img :src="item.cover_img" alt="">
           </div>
-          <p>AOC Long Snowflake Earrings AOC Long Snowflake Earrings</p>
+          <p>{{ item.title }}</p>
           <div class="type">
-            <img src="@/assets/img/test.png" alt="">
+            <img  v-for="tag in item.show_tag" :src="tag.mask_bg_image" alt="">
           </div>
           <div class="price">
-            $12.90
+            ${{ item.market_price }}
           </div>
         </li>
       </ul>
@@ -36,9 +36,32 @@
 export default {
   components: {
   },
+  props: {
+    goodList: {
+      type: Array,
+      default() {
+        return []
+      }
+    },
+    storeInfo: {
+      type: Object,
+      default() {
+        return {}
+      }
+    }
+  },
+  watch: {
+    // storeInfo(re) {
+    //   alert(33)
+    //   console.log(re, 9999999999999999999999999999)
+    // }
+  },
   data() {
     return {
     }
+  },
+  created() {
+    // console.log(this.storeInfo, 999999999999)
   },
   methods: {
   }
@@ -123,15 +146,33 @@ export default {
             font-weight:400;
             color:rgba(74,74,74,1);
             line-height: 20px;
-            margin: 10px 0px;
+            margin: 8px 0px;
+            overflow: hidden;
+            height: 40px;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;//规定几行显示省略号
+            -webkit-box-orient: vertical;
           }
           .type {
-            height: 16px;
+            height: 20px;
             overflow: hidden;
-            img {
+            white-space: nowrap;
+            img{
               display: inline-block;
+              white-space: nowrap;
               height: 16px;
-              margin-right: 10px;
+              margin-right: 5px;
+            }
+            span{
+                display: inline-block;
+                white-space: nowrap;
+                margin-top: 0px;
+                padding: 2px 3px;
+                 margin-right: 5px;
+                font-size: 12px;
+                color: #ffff;
+                background: linear-gradient(to right, #F77062 , #FE5196); /* 标准的语法 */
             }
           }
           .price {

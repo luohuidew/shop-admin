@@ -123,7 +123,7 @@ export default {
               }
               if (status === 1 || status === 2 || status === 3) { // 1注册商户成功,店铺信息未添加 // 3未选品 // 2店铺关闭
                 this.$router.push({ path: '/' })
-              } else { // 有商品
+              } else { // status === 4 有商品
                 this.$router.push({ path: this.redirect || '/goodsManage/pubGood' })
               }
             })

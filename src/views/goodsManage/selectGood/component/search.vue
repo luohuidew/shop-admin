@@ -9,7 +9,7 @@
           placeholder=""
           class="search-input"
           suffix-icon="el-icon-search"/>
-        <el-button type="primary" size="small" >搜索</el-button>
+        <el-button type="primary" size="small" @click="search(true)" >搜索</el-button>
       </div>
     </div>
     <div class="content">
@@ -206,9 +206,14 @@ export default {
       })
       item.active = true
     },
-    search() {
-      this.serchObj.keywords = undefined
-      this.$emit('serch', this.serchObj)
+    search(val) {
+      if (val) {
+        this.serchObj.keywords = this.searchVal
+        this.$emit('serch', this.serchObj)
+      } else {
+        this.serchObj.keywords = undefined
+        this.$emit('serch', this.serchObj)
+      }
     }
   }
 }
