@@ -11,7 +11,7 @@
           <svg-icon icon-class="user" />
         </span>
         <div class="username">
-          namesuser
+          {{ name }}
           <i class="el-icon-caret-bottom"/>
         </div>
       </div>
@@ -47,7 +47,8 @@ export default {
   computed: {
     ...mapGetters([
       'sidebar',
-      'avatar'
+      'avatar',
+      'name'
     ])
   },
   methods: {

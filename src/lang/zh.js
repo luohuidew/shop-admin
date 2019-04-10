@@ -86,7 +86,7 @@ export default {
     title: '商家后台',
     logIn: '登录',
     username: '账号',
-    password: '密码',
+    password: '密码'
   },
   documentation: {
     documentation: '文档',
@@ -115,5 +115,15 @@ export default {
     but_addDoods: '添加商品',
     but_openShop: '开启店铺',
     but_goShop: '开启店铺',
+  },
+  goodsManage: {
+    Good_filters: '商品库',
+    search: '搜索',
+    clear_search: '清空搜索条件',
+    Recommend: '推荐',
+    search_result: '搜索结果',
+    Select_all: '全选',
+    profit: '盈利',
+    search_empty: '未找到商品'
   }
 }

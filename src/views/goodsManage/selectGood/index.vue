@@ -8,8 +8,9 @@
     <search :serch-datas = "serchData" @serch = "serch"/>
     <div class="tabel">
       <div class="top">
-        <div class="title">推荐</div>
-        <el-checkbox v-model="allChecked" @change="AllSlectChange">全选</el-checkbox>
+        <div class="title" v-if="Recommend">{{ $t("goodsManage.Recommend") }}</div>
+        <div class="title" v-else>{{ $t("goodsManage.search_result") }}</div>
+        <el-checkbox v-model="allChecked" @change="AllSlectChange">{{ $t("goodsManage.Select_all") }}</el-checkbox>
       </div>
       <div
         v-loading="loading"
@@ -18,7 +19,7 @@
         <ul>
           <li v-for="(item) in goodList" :key="item.sku_id" class="selected">
             <div class="royalty">
-              {{ item.profit }}%<br>盈利
+              {{ item.profit }}%<br>{{ $t("goodsManage.profit") }}
             </div>
             <img :src="item.cover_img" alt="">
             <p>{{ item.title }}</p>
@@ -38,7 +39,7 @@
           </li>
         </ul>
         <div v-show="goodList.length === 0" class="nogood">
-          没有搜索到商品
+          {{ $t("goodsManage.search_empty") }}
         </div>
       </div>
       <div class="page">
@@ -52,7 +53,8 @@
           @prev-click = "handlePageChange"
           @next-click = "handlePageChange"
         />
-        <el-button type="primary" :loading="butLoadingPub" @click="pubgoods">已选择{{ selectAllSize }}个商品</el-button>
+        <el-button type="primary" v-show="language === 'zh'" :loading="butLoadingPub" @click="pubgoods">已选择{{ selectAllSize }}个商品</el-button>
+        <el-button type="primary" v-show="language === 'en'" :loading="butLoadingPub" @click="pubgoods">{{ selectAllSize }} products selected</el-button>
       </div>
     </div>
   </div>
@@ -71,6 +73,7 @@ export default {
   },
   data() {
     return {
+      Recommend: true,
       butLoadingPub: false,
       storeState: getStoreState(),
       gloablLoading: false,
@@ -89,6 +92,11 @@ export default {
       selectAllSize: 0
     }
   },
+  computed: {
+    language() {
+      return this.$store.getters.language
+    }
+  },
   created() {
     this.getType()
   },
@@ -99,7 +107,9 @@ export default {
     AllSlectChange(val) {
       if (val) {
         this.goodList.map((item) => {
-          item.selected = true
+          if (!item.in_store) {
+            item.selected = true
+          }
         })
       } else {
         this.goodList.map((item) => {
@@ -126,17 +136,18 @@ export default {
         copyId = [...currenpageSelectId]
       }
       const ids = [...new Set([...copyId, ...ary])]
-      this.goodList.forEach((item) => {
+      const no_in_stor_good = this.goodList.filter((item) => {
         if (!item.selected) {
           const index = ids.indexOf(item.sku_id)
           if (index !== -1) {
             ids.splice(index, 1)
           }
         }
+        return !item.in_store
       })
       this.selectAllGood[currentpage] = [...ids]
       if (this.goodList.length > 0) { // 去掉没有商品全选无法取消bug
-        if (ary.length === this.goodList.length) { // 判断是否全选
+        if (ary.length === no_in_stor_good.length) { // 判断是否全选
           this.allChecked = true
         } else {
           this.allChecked = false
@@ -178,6 +189,8 @@ export default {
       const allId = this.getAllSelectId()
       this.loading = true
       APIcreateShop.getGoodsList(obj).then((res) => {
+        this.allChecked = false // 取消全选
+        this.Recommend = false
         this.loading = false
         const datas = res.data
         this.pagination.total = datas.totle
@@ -188,6 +201,7 @@ export default {
           }
         })
         this.goodList = datas.data
+        this.selectChange()
       }).catch(() => {
         this.loading = false
       })

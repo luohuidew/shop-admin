@@ -5,7 +5,7 @@
       <div class="top">
         <div class="title">商品列表</div>
         <div class="des">
-          <span>共{{goodsListLength}}个商品，最多可添加120个商品</span>
+          <span>已发布{{goodsListLength}}个商品，最多可发布120个商品</span>
           <el-button type="primary" size="small" @click="addGoods">添加商品</el-button>
         </div>
       </div>
@@ -109,7 +109,7 @@ export default {
     return {
       storeState: getStoreState(),
       loadingGood: false,
-      tabPosition: 'Already',
+      tabPosition: 'noready',
       goodsListEd: [], // 已发布商品列表
       goodsListNo: [], // 未发布商品列表
       goodsList: [],
@@ -135,7 +135,7 @@ export default {
     }
   },
   created() {
-    this.initData({ down: 2 }) //  已发布
+    this.initData({ down: 1 }) //  未发布
     this.shopInfo()
   },
   methods: {

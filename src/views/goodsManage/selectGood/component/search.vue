@@ -1,7 +1,7 @@
 <template>
   <div class="cearch-wrap">
     <div class="title">
-      <div class="name">商品库</div>
+      <div class="name">{{ $t("goodsManage.Good_filters") }}</div>
       <div class="btn">
         <el-input
           v-model="searchVal"
@@ -9,7 +9,7 @@
           placeholder=""
           class="search-input"
           suffix-icon="el-icon-search"/>
-        <el-button type="primary" size="small" @click="search(true)" >搜索</el-button>
+        <el-button type="primary" size="small" @click="search(true)" >{{ $t("goodsManage.search") }}</el-button>
       </div>
     </div>
     <div class="content">
@@ -69,8 +69,8 @@
         </div>
       </div>
       <div class="bottom">
-        <el-button type="primary" size="small" @click="search(false)">搜索</el-button>
-        <el-button type="info" size="small" @click="resetStyle(serchData)">清空搜索条件</el-button>
+        <el-button type="primary" size="small" @click="search(false)">{{ $t("goodsManage.search") }}</el-button>
+        <el-button type="info" size="small" @click="resetStyle(serchData)">{{ $t("goodsManage.clear_search") }}</el-button>
       </div>
     </div>
 

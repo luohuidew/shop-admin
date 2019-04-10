@@ -104,5 +104,16 @@ export default {
     but_addDoods: 'Add products',
     but_openShop: 'Open your WeGet store',
     but_goShop: 'Open your WeGet store'
+  },
+  goodsManage: {
+    Good_filters: 'Filters',
+    search: 'Search',
+    clear_search: 'Empty search',
+    Recommend: 'What’s hot…',
+    search_result: 'Search result',
+    Select_all: 'Select All',
+    profit: 'Profit',
+    search_empty: 'The result is empty.'
+
   }
 }
