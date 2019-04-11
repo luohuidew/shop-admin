@@ -80,7 +80,7 @@ export default {
     switchLang: 'English'
   },
   login: {
-    title: 'WeGet Store Management',
+    title: 'Store Management System',
     logIn: 'Sign in',
     username: 'Username',
     password: 'Password',
@@ -140,7 +140,11 @@ export default {
     Unpublished: 'Unpublished',
     pc_divice: 'Desktop device',
     h5_divice: 'Mobile device',
-    go_back: 'go back'
+    go_back: 'go back',
+    Publish_goods: 'Publish goods',
+    Publish_succee: 'Congratulations! You just launched your store! Please complete your payment information to get paid',
+    go_add: 'Fill in',
+    close: 'Close'
   },
   incomeManage: {
     today_price: 'Today’s revenue',

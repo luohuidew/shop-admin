@@ -146,7 +146,11 @@ export default {
     Unpublished: '未发布',
     pc_divice: 'PC端',
     h5_divice: '移动端',
-    go_back: '返回'
+    go_back: '返回',
+    Publish_goods: '发布商品',
+    Publish_succee: '恭喜您，发布成功，可到App或者pc端查看填写收款信息，有助于您的收款',
+    go_add: '去填写',
+    close: '关闭'
   },
   incomeManage: {
     today_price: '今日交易金额',

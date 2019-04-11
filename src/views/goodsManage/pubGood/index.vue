@@ -23,7 +23,7 @@
           </el-radio-group>
           <div>
             <span @click="timeSort">
-              {{ $t("goodsManage.Sort_price") }}
+              {{ $t("goodsManage.Sort_time") }}
               <i class="el-icon-d-caret"/>
             </span>
             <span @click="priceSort">
@@ -85,13 +85,12 @@
     </div>
     <el-dialog
       :visible.sync="dialogPusVisible"
-      title="发布商品"
+      :title="$t('goodsManage.Publish_goods')"
       width="30%">
-      <span class="dialog-cotent">恭喜您，发布成功，可到App或者pc端查看<br>
-        填写收款信息，有助于您的收款</span>
+      <span class="dialog-cotent">{{ $t("goodsManage.Publish_succee") }}</span>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="addMoneyInfo">去填写</el-button>
-        <el-button type="primary" @click="dialogPusVisible = false">关闭</el-button>
+        <el-button type="primary" @click="addMoneyInfo">{{ $t("goodsManage.go_add") }}</el-button>
+        <el-button type="primary" @click="dialogPusVisible = false">{{ $t("goodsManage.close") }}</el-button>
       </span>
     </el-dialog>
   </div>
