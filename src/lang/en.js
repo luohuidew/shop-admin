@@ -105,7 +105,13 @@ export default {
     lose_shop: 'Close your store',
     select_val: 'Please choose',
     save: 'Save',
-    open_shop: 'Open your store'
+    open_shop: 'Open your store',
+    logo_size: 'Size: limit to 1MB; Format: jpg, jpeg, png',
+    close_shop_suceess: 'Successful closure of stores',
+    open_shop_suceess: 'Successful opening of stores',
+    creat_shop_suceess: 'Successful Store Creation',
+    eadit_shop_suceess: 'update success',
+    img_required: 'Img is required'
 
   },
   step: {

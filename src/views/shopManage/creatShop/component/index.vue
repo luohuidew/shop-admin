@@ -117,16 +117,16 @@ export default {
       },
       rules: {
         email: [
-          { required: true, message: '请输入信息', trigger: 'blur' }
+          { required: true, trigger: 'blur' }
         ],
         address: [
-          { required: true, message: '请输入信息', trigger: 'blur' }
+          { required: true, trigger: 'blur' }
         ],
         name: [
-          { required: true, message: '请输入信息', trigger: 'blur' }
+          { required: true, trigger: 'blur' }
         ],
         desc: [
-          { required: true, message: '请输入信息', trigger: 'blur' }
+          { required: true, message: 'Slogan is required', trigger: 'blur' }
         ],
         // logo: [
         //   { required: true, message: '请上传图片', trigger: 'change' }
@@ -141,19 +141,19 @@ export default {
         //   { type: 'date', required: true, message: '请选择日期'}
         // ],
         contacts: [
-          { required: true, message: '请输入信息', trigger: 'blur' }
+          { required: true,  trigger: 'blur' }
         ],
         phone: [
-          { required: true, message: '请输入信息', trigger: 'blur' }
+          { required: true,  trigger: 'blur' }
         ],
         city: [
-          { required: true, message: '请输入信息', trigger: 'blur' }
+          { required: true,  trigger: 'blur' }
         ],
         state: [
-          { required: true, message: '请输入信息', trigger: 'blur' }
+          { required: true,  trigger: 'blur' }
         ],
         zipcode: [
-          { required: true, message: '请输入信息', trigger: 'blur' }
+          { required: true, trigger: 'blur' }
         ]
       }
     }
@@ -171,7 +171,7 @@ export default {
     closeStore() {
       APIcreateShop.closeStore({ store_id: getStoreId() }).then(res => {
         this.$message({
-          message: '店铺关闭成功',
+          message: this.$t('shopCreate.close_shop_suceess'),
           type: 'success'
         })
         this.closeStoreState = true
@@ -180,7 +180,7 @@ export default {
     openStore() {
       APIcreateShop.releaseStore({ store_id: getStoreId() }).then(res => {
         this.$message({
-          message: '店铺开启成功',
+          message: this.$t('shopCreate.open_shop_suceess'),
           type: 'success'
         })
         this.closeStoreState = false
@@ -199,19 +199,19 @@ export default {
     submitForm(formName) {
       if (!this.form.logo) {
         this.$message({
-          message: '请上传图片',
+          message: this.$t('shopCreate.img_required'),
           type: 'warning'
         })
         return
       } else if (!this.form.pc_background_url) {
         this.$message({
-          message: '请上传图片',
+          message: this.$t('shopCreate.img_required'),
           type: 'warning'
         })
         return
       } else if (!this.form.mobile_background_url) {
         this.$message({
-          message: '请上传图片',
+          message: this.$t('shopCreate.img_required'),
           type: 'warning'
         })
         return
@@ -222,7 +222,7 @@ export default {
             APIcreateShop.createShop(this.form).then((res) => {
               setStoreId(res.data.store_id)
               this.$message({
-                message: '店铺创建成功',
+                message: this.$t('shopCreate.creat_shop_suceess'), // 店铺创建成功
                 type: 'success'
               })
               apiLogin.getStoreState().then((res) => { // 获取最新店铺状态
@@ -236,7 +236,7 @@ export default {
           } else { // 编辑店铺
             APIcreateShop.updateShop(this.form).then((res) => {
               this.$message({
-                message: '修改成功',
+                message: this.$t('shopCreate.eadit_shop_suceess'),
                 type: 'success'
               })
             })

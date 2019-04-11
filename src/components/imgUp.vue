@@ -13,7 +13,7 @@
       <div tabindex="0" class="el-upload el-upload--picture-card">
         <i class="el-icon-plus"/>
       </div>
-      <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过1MB</div>
+      <div slot="tip" class="el-upload__tip">{{ $t('shopCreate.logo_size')}}</div>
     </el-upload>
     <div v-show="imgshow" class="img">
       <!--<img src="" alt="">-->
@@ -71,7 +71,7 @@ export default {
       //   this.$message.error("上传头像图片只能是 JPG 格式!");
       // }
       if (!isLt2M) {
-        this.$message.error('上传头像图片大小不能超过 1MB!')
+        this.$message.error('limit to 1MB')
         return false
       } else {
         this.loading = true
@@ -83,14 +83,14 @@ export default {
       console.log(response)
       if (response.code !== 1000) {
         this.loading = false
-        this.$message.error('图片上传失败，请重试')
+        this.$message.error('upload fails, please try again')
       } else {
         this.imgshow = true
         this.originUrl = window.URL.createObjectURL(file.raw)
         this.loading = false
         this.$message({
           type: 'success',
-          message: '上传成功成功!'
+          message: 'upload success!'
         })
         this.$emit('upload', response.data)
       }

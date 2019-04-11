@@ -112,7 +112,14 @@ export default {
     lose_shop: '关闭店铺',
     select_val: '请选择',
     save: '保存',
-    open_shop: '开启店铺'
+    open_shop: '开启店铺',
+    logo_size: '只能上传jpg/png文件，且不超过1MB',
+    close_shop_suceess: '店铺关闭成功',
+    open_shop_suceess: '店铺开启成功',
+    creat_shop_suceess: '店铺创建成功',
+    eadit_shop_suceess: '修改成功',
+    img_required: '请上传图片'
+
   },
   step: {
     Store_preferences: '填写店铺信息',
