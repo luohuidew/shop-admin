@@ -264,7 +264,7 @@ export default {
         font-weight:400;
       }
       .type-conten {
-        max-height: 200px;
+        max-height: 150px;
         flex-grow: 1;
         overflow-y: scroll;
         section {

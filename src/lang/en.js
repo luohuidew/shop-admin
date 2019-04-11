@@ -92,6 +92,21 @@ export default {
     pc_background_url: 'Store background for website',
     mobile_background_url: 'Store background for App',
     is_help_order: 'Showing how many products your store sold',
+    open_time: 'Store launch date',
+    Contact_name: 'Contact name',
+    Contact_iphone: 'Contact number',
+    Contact_email: 'Contact email',
+    Address: 'Address',
+    Address2: 'Address2',
+    City: 'City',
+    State: 'State',
+    Zipcode: 'Zipcode',
+    edit_but: 'Update',
+    lose_shop: 'Close your store',
+    select_val: 'Please choose',
+    save: 'Save',
+    open_shop: 'Open your store'
+
   },
   step: {
     Store_preferences: 'Store preferences',
@@ -113,7 +128,35 @@ export default {
     search_result: 'Search result',
     Select_all: 'Select All',
     profit: 'Profit',
-    search_empty: 'The result is empty.'
-
+    search_empty: 'The result is empty.',
+    goos_list: 'Selected Products List',
+    add_good: 'Add more products',
+    Sort_time: 'Sort By Time',
+    Sort_price: 'Sort By Price',
+    good_set_top: 'Top',
+    preview: 'Preciew in your store',
+    push_shop: 'Publish to your store',
+    published: 'published',
+    Unpublished: 'Unpublished',
+    pc_divice: 'Desktop device',
+    h5_divice: 'Mobile device',
+    go_back: 'go back'
+  },
+  incomeManage: {
+    today_price: 'Today’s revenue',
+    today_profit: 'Today’s credit',
+    profit: 'Total credit',
+    valid_profit: 'Available credit for deposit',
+    title1: 'Revenue = Total transaction amount of products sold',
+    title2: 'Credit = Revenue x credit rate',
+    title3: ' Total credit = Total revenue x credit rate',
+    title4: 'Available credit for deposit = Total credit from last payment period of 30 days',
+    payType: 'Payment method',
+    add_but: 'Add account',
+    edit_but: 'Update',
+    income_info: 'The payment period is 30 days. The amount will be deposit into your account within 7 days after the payment period. Please contact info@weget.com if you have any questions.',
+    apply_but: 'Request for deposit',
+    Unable: 'Sorry! Your available credit for deposit is 0.',
+    Close: 'Close'
   }
 }

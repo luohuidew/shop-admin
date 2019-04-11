@@ -20,39 +20,39 @@
       <el-form-item :label="$t('shopCreate.is_help_order')" >
         <el-switch v-model="form.is_help_order" :active-value="1" :inactive-value="2" />
       </el-form-item>
-      <el-form-item label="开店时间" >
-        <el-date-picker v-model="form.open_time"  type="date" placeholder="选择日期"
+      <el-form-item :label="$t('shopCreate.open_time')" >
+        <el-date-picker v-model="form.open_time"  type="date" :placeholder="$t('shopCreate.select_val')"
           style="width: 100%;"/>
       </el-form-item>
-      <el-form-item label="inns_url">
+      <el-form-item label="Inns_url">
         <el-input v-model="form.inns_url"/>
       </el-form-item>
-      <el-form-item label="facebook_url">
+      <el-form-item label="Facebook_url">
         <el-input v-model="form.facebook_url"/>
       </el-form-item>
-      <el-form-item label="snapchat_url">
+      <el-form-item label="Snapchat_url">
         <el-input v-model="form.snapchat_url"/>
       </el-form-item>
-      <el-form-item label="联系人" prop="contacts">
+      <el-form-item :label="$t('shopCreate.Contact_name')"  prop="contacts">
         <el-input v-model="form.contacts"/>
       </el-form-item>
-      <el-form-item label="联系电话" prop="phone">
+      <el-form-item  :label="$t('shopCreate.Contact_iphone')" prop="phone">
         <el-input v-model="form.phone"/>
       </el-form-item>
-      <el-form-item label="联系邮箱" prop="email">
+      <el-form-item :label="$t('shopCreate.Contact_email')" prop="email">
         <el-input v-model="form.email"/>
       </el-form-item>
-      <el-form-item label="详细地址" prop="address">
+      <el-form-item :label="$t('shopCreate.Address')" prop="address">
         <el-input v-model="form.address" type="textarea"/>
       </el-form-item>
-      <el-form-item label="详细地址2">
+      <el-form-item :label="$t('shopCreate.Address2')">
         <el-input v-model="form.address1" type="textarea"/>
       </el-form-item>
-      <el-form-item label="城市" prop="city">
+      <el-form-item :label="$t('shopCreate.City')" prop="city">
         <el-input v-model="form.city"/>
       </el-form-item>
-      <el-form-item label="州" prop="state">
-        <el-select v-model="form.state" placeholder="请选择">
+      <el-form-item :label="$t('shopCreate.State')" prop="state">
+        <el-select v-model="form.state" :placeholder="$t('shopCreate.select_val')">
           <el-option
             v-for="item in MapState"
             :key="item.state"
@@ -61,14 +61,14 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="邮编" prop="zipcode">
+      <el-form-item :label="$t('shopCreate.Zipcode')" prop="zipcode">
         <el-input v-model="form.zipcode"/>
       </el-form-item>
       <el-form-item >
-        <el-button v-if="creat === true" type="primary" class="but" @click="submitForm('ruleForm')">确定</el-button>
-        <el-button v-if="creat === false" type="primary" class="but" @click="submitForm('ruleForm')">修改</el-button>
-        <el-button v-if="creat === false && !closeStoreState" type="primary" class="but" @click="closeStore">关闭店铺</el-button>
-        <el-button v-if="creat === false && closeStoreState" type="primary" class="but" @click="openStore">开启店铺</el-button>
+        <el-button v-if="creat === true" type="primary" class="but" @click="submitForm('ruleForm')">{{$t('shopCreate.save')}}</el-button>
+        <el-button v-if="creat === false" type="primary" class="but" @click="submitForm('ruleForm')">{{$t('shopCreate.edit_but')}}</el-button>
+        <el-button v-if="creat === false && !closeStoreState" type="primary" class="but" @click="closeStore">{{$t('shopCreate.lose_shop')}}</el-button>
+        <el-button v-if="creat === false && closeStoreState" type="primary" class="but" @click="openStore">{{$t('shopCreate.open_shop')}}</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -78,7 +78,8 @@
 import imgUp from '@/components/imgUp'
 import step from '@/components/step/index'
 import APIcreateShop from '@/api/shop'
-import { setStoreId, getStoreId } from '@/utils/auth'
+import apiLogin from '@/api/login'
+import { setStoreId, getStoreId, setStoreState } from '@/utils/auth'
 
 export default {
   components: {
@@ -223,6 +224,12 @@ export default {
               this.$message({
                 message: '店铺创建成功',
                 type: 'success'
+              })
+              apiLogin.getStoreState().then((res) => { // 获取最新店铺状态
+                const status = res.data.status
+                if (status) {
+                  setStoreState(status)
+                }
               })
               this.$router.push({ name: 'selectGood' })
             })

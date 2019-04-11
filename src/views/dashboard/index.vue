@@ -63,7 +63,7 @@ export default {
       })
     },
     goShop() {
-      this.$router.push({ name: 'pubGood' })
+      this.$router.push({ name: 'pubGood', query: { down: 2 }})
     },
     creatShop() {
       this.$router.push({ name: 'creatShop' })

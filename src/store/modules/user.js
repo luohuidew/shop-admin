@@ -1,10 +1,10 @@
 import { login, logout, getInfo } from '@/api/login'
-import { getToken, setToken, removeToken, removeStoreId } from '@/utils/auth'
+import { getToken, setToken, removeToken, removeStoreId, getUserName, setUserName } from '@/utils/auth'
 
 const user = {
   state: {
     token: getToken(),
-    name: '',
+    name: getUserName(),
     avatar: '',
     roles: []
   },
@@ -34,6 +34,7 @@ const user = {
           const data = response.data
           setToken(data.token)
           commit('SET_TOKEN', data.token)
+          setUserName(user)
           commit('SET_NAME', user)
           resolve()
         }).catch(error => {

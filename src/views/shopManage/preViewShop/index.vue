@@ -1,13 +1,16 @@
 <template>
   <div class="creatshop-container">
     <el-tabs v-model="activeName">
-      <el-tab-pane label="PC端" name="pc">
+      <el-tab-pane :label="$t('goodsManage.pc_divice')" name="pc">
         <Pc :store-info = "storeInfo" :good-list = "goodList" />
       </el-tab-pane>
-      <el-tab-pane label="移动端" name="h5">
+      <el-tab-pane :label="$t('goodsManage.h5_divice')" name="h5">
         <Mobile :store-info = "storeInfo" :good-list = "goodList" />
       </el-tab-pane>
     </el-tabs>
+    <div class="gobalck">
+      <el-button type="primary" size="" @click="$router.go(-1)"> {{ $t("goodsManage.go_back") }}</el-button>
+    </div>
   </div>
 </template>
 
@@ -49,6 +52,10 @@ export default {
   .creatshop-container{
     width: 1100px;
     margin: 20px auto;
+  }
+  .gobalck {
+    text-align: center;
+    margin-top: 30px;
   }
 </style>
 

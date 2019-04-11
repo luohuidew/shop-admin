@@ -42,21 +42,21 @@ export const constantRouterMap = [
     component: Layout,
     redirect: '/goodsManage/pubGood',
     name: 'goodsManage',
-    meta: { title: 'goodsManage', icon: 'example' },
+    meta: { title: 'goodsManage', icon: 'user' },
     children: [
       {
         hidden: true,
         path: 'selectGood',
         name: 'selectGood',
         component: () => import('@/views/goodsManage/selectGood/index'),
-        meta: { title: 'selectGood', icon: 'tree' }
+        meta: { title: 'selectGood', icon: 'user' }
       },
       {
         hidden: true,
         path: 'pubGood',
         name: 'pubGood',
         component: () => import('@/views/goodsManage/pubGood/index'),
-        meta: { title: 'pubGood', icon: 'tree' }
+        meta: { title: 'pubGood', icon: 'user' }
       }
     ]
   },
@@ -65,14 +65,14 @@ export const constantRouterMap = [
     component: Layout,
     redirect: '/shopManage/creatShop',
     name: 'shopManage',
-    meta: { title: 'shopManage', icon: 'example' },
+    meta: { title: 'shopManage', icon: 'user' },
     children: [
       {
         hidden: true,
         path: 'creatShop',
         name: 'creatShop',
         component: () => import('@/views/shopManage/creatShop/index'),
-        meta: { title: 'creatShop', icon: 'tree' }
+        meta: { title: 'creatShop', icon: 'user' }
       },
       {
         hidden: true,
@@ -86,7 +86,7 @@ export const constantRouterMap = [
         path: 'preViewShop',
         name: 'preViewShop',
         component: () => import('@/views/shopManage/preViewShop/index'),
-        meta: { title: '店铺预览', icon: 'tree' }
+        meta: { title: 'preViewShop', icon: 'tree' }
       }
     ]
   },
@@ -95,14 +95,14 @@ export const constantRouterMap = [
     component: Layout,
     redirect: '/incomeManage/settlement',
     name: 'incomeManage',
-    meta: { title: 'incomeManage', icon: 'example' },
+    meta: { title: 'incomeManage', icon: 'user' },
     children: [
       {
         hidden: true,
         path: 'settlement',
         name: 'settlement',
         component: () => import('@/views/incomeManage/settlement/index'),
-        meta: { title: '收益结算', icon: 'tree' }
+        meta: { title: 'settlement', icon: 'tree' }
       }
     ]
   },

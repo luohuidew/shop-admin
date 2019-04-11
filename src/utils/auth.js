@@ -4,6 +4,7 @@ import { sha256 } from 'js-sha256'
 const TokenKey = 'vue_admin_template_token'
 const StoreId = 'StoreId'
 const StoreState = 'StoreState'
+const UserName = 'UserName'
 
 export function getToken() {
   return Cookies.get(TokenKey)
@@ -11,6 +12,14 @@ export function getToken() {
 
 export function setToken(token) {
   return Cookies.set(TokenKey, token)
+}
+
+export function getUserName() {
+  return Cookies.get(UserName)
+}
+
+export function setUserName(name) {
+  return Cookies.set(UserName, name)
 }
 
 export function removeToken() {

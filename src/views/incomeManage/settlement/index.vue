@@ -4,41 +4,41 @@
       <div class="herader">
         <div class="num">
           <span>${{ datas.today_price }}</span>
-          <br>今日交易金额
+          <br>{{ $t("incomeManage.today_price") }}
         </div>
         <div class="num">
           <span>${{ datas.today_profit }}</span>
-          <br>今日收益
+          <br>{{ $t("incomeManage.today_profit") }}
         </div>
         <div class="num">
           <span>${{ datas.profit }}</span>
-          <br>累计收益
+          <br>{{ $t("incomeManage.profit") }}
         </div>
         <div class="num">
           <span>${{ datas.valid_profit }}</span>
-          <br>可领取收益
+          <br>{{ $t("incomeManage.valid_profit") }}
         </div>
       </div>
       <div class="content">
-        <p>今日交易金额=今日卖出商品总额</p>
-        <p>今日收益=所有商品收益相加（商品收益=交易额*收益比率）</p>
-        <p>累计收益=开店以来的累计收益</p>
-        <p>可领取收益=超过30天的可领取收益（因为购买商品我们支持30天退换货，所以要等用户确认不会退换后结算）</p>
+        <p>{{ $t("incomeManage.title1") }}</p>
+        <p>{{ $t("incomeManage.title2") }}</p>
+        <p>{{ $t("incomeManage.title3") }}</p>
+        <p>{{ $t("incomeManage.title4") }}</p>
       </div>
       <div class="activ">
-        <span> 收款方式：</span>
+        <span> {{ $t("incomeManage.payType") }}：</span>
         <template v-if="datas.pay">
           <img src="@/assets/img/paypal.png" alt="" v-if="datas.pay_method === 1" >
           <span>{{ datas.pay_account }}</span>
         </template>
 
-        <el-button type="primary" class="edit" v-if ="datas.pay" @click="editpaypal" >修改</el-button>
-        <el-button type="primary" class="edit" v-else @click="addpaypal" >添加账号</el-button>
+        <el-button type="primary" class="edit" v-if ="datas.pay" @click="editpaypal" >{{ $t("incomeManage.edit_but") }}</el-button>
+        <el-button type="primary" class="edit" v-else @click="addpaypal" >{{ $t("incomeManage.add_but") }}</el-button>
       </div>
-      <p class="end">每个月可以提交一次结算申请，我们将会在7天内给您打款。如有问题，您可联系info@weget.com</p>
+      <p class="end">{{ $t("incomeManage.income_info") }}</p>
     </div>
     <div class="apply">
-      <el-button type="primary" class="edit" @click="apply" >申请结算</el-button>
+      <el-button type="primary" class="edit" @click="apply" >{{ $t("incomeManage.apply_but") }}</el-button>
     </div>
     <el-dialog
       :visible.sync="dialogPayPalVisible"
@@ -70,10 +70,10 @@
       title=""
       width="30%" >
       <div class="dialog-apply">
-        您的可领取收益为0，没法为您结算
+        {{ $t("incomeManage.Unable") }}
       </div>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="dialogApplay()">关闭</el-button>
+        <el-button type="primary" @click="dialogApplay()">{{ $t("incomeManage.Close") }}</el-button>
       </span>
     </el-dialog>
 

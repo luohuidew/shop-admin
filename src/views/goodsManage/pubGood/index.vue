@@ -3,29 +3,31 @@
     <step v-if="storeState==='1' || storeState==='3'" :num="2"/>
     <div class="good-wrap">
       <div class="top">
-        <div class="title">商品列表</div>
+        <div class="title">{{ $t("goodsManage.goos_list") }}</div>
         <div class="des">
-          <span>已发布{{goodsListLength}}个商品，最多可发布120个商品</span>
-          <el-button type="primary" size="small" @click="addGoods">添加商品</el-button>
+          <span v-show="language === 'zh'">已发布{{ goodsListLength }}个商品，最多可发布120个商品 </span>
+          <span v-show="language === 'en'">{{ goodsListLength }} Products Selected, Max. 120 products could be sdded </span>
+          <el-button type="primary" size="small" @click="addGoods">{{ $t("goodsManage.add_good") }}</el-button>
         </div>
       </div>
-      <div class="wrap"
-           v-loading="loadingGood"
-           element-loading-text="拼命加载中"
-           element-loading-spinner="el-icon-loading"
-           element-loading-background="rgba(0, 0, 0, 0.4)">
+      <div
+        v-loading="loadingGood"
+        class="wrap"
+        element-loading-text="loading..."
+        element-loading-spinner="el-icon-loading"
+        element-loading-background="rgba(0, 0, 0, 0.4)">
         <div class="title">
           <el-radio-group v-model="tabPosition">
-            <el-radio-button label="Already" size="small" >已发布</el-radio-button>
-            <el-radio-button label="noready" size="small" >未发布</el-radio-button>
+            <el-radio-button label="Already" size="small" >{{ $t("goodsManage.published") }}</el-radio-button>
+            <el-radio-button label="noready" size="small" >{{ $t("goodsManage.Unpublished") }}</el-radio-button>
           </el-radio-group>
           <div>
             <span @click="timeSort">
-              时间排序
+              {{ $t("goodsManage.Sort_price") }}
               <i class="el-icon-d-caret"/>
             </span>
             <span @click="priceSort">
-              金额排序
+              {{ $t("goodsManage.Sort_price") }}
               <i class="el-icon-d-caret"/>
             </span>
           </div>
@@ -36,7 +38,7 @@
               <div class="cotent">
                 <div class="img-good">
                   <div class="royalty">
-                    {{ item.profit }}%<br>盈利
+                    {{ item.profit }}%<br>{{ $t("goodsManage.profit") }}
                   </div>
                   <img :src="item.cover_img" class="" alt="">
                 </div>
@@ -51,7 +53,7 @@
                     ${{ item.alone_price }}
                   </div>
                   <div class="btn">
-                    <el-button size="mini" type="primary" class="padding" @click="setTopDood(item)">置顶</el-button>
+                    <el-button size="mini" type="primary" class="padding" @click="setTopDood(item)">{{ $t("goodsManage.good_set_top") }}</el-button>
                     <span @click="deleteDood(item)"><i class="el-icon-delete  color" /></span>
                   </div>
                 </div>
@@ -60,7 +62,7 @@
           </el-row>
         </div>
         <p v-if="goodsList.length === 0" class="nogoods">
-          还没有商品
+          {{ $t("goodsManage.search_empty") }}
         </p>
       </div>
       <div class="page">
@@ -75,8 +77,8 @@
           @next-click = "handlePageChange"
         />
         <div>
-          <el-button type="primary" @click="perView">预览店铺</el-button>
-          <el-button v-show="tabPosition === 'noready'" type="primary" @click="pubgoods">发布商品到店铺</el-button>
+          <el-button type="primary" @click="perView">{{ $t("goodsManage.preview") }}</el-button>
+          <el-button v-show="tabPosition === 'noready'" type="primary" @click="pubgoods">{{ $t("goodsManage.push_shop") }}</el-button>
         </div>
 
       </div>
@@ -125,6 +127,11 @@ export default {
       priceSortSate: 'desc'
     }
   },
+  computed: {
+    language() {
+      return this.$store.getters.language
+    }
+  },
   watch: {
     tabPosition: function(newval) {
       if (newval === 'noready') {
@@ -135,10 +142,21 @@ export default {
     }
   },
   created() {
-    this.initData({ down: 1 }) //  未发布
+    if (this.$route.query.down === 2) {
+      // this.initData({ down: 2 })
+      this.tabPosition = 'Already'
+    } else {
+      this.getGoodSize() // 获取已发布商品的数量
+      this.initData({ down: 1 }) //  未发布
+    }
     this.shopInfo()
   },
   methods: {
+    getGoodSize() {
+      APIcreateShop.getShopgoods({ down: 2, store_id: getStoreId() }).then((res) => {
+        this.goodsListLength = res.data.total
+      })
+    },
     shopInfo() {
       APIincome.storeStatistics({ store_id: getStoreId() }).then((res) => {
         this.INFOSHOP = res.data

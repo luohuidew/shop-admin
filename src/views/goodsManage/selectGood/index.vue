@@ -21,7 +21,7 @@
             <div class="royalty">
               {{ item.profit }}%<br>{{ $t("goodsManage.profit") }}
             </div>
-            <img :src="item.cover_img" alt="">
+            <img :src="item.cover_img" alt="" @click="openDetail(item.sku_id)">
             <p>{{ item.title }}</p>
             <div class="bottom">
               <div class="left">
@@ -101,6 +101,9 @@ export default {
     this.getType()
   },
   methods: {
+    openDetail(id) {
+      window.open(`https://www.weget.com/detail?sku_id=${id}`)
+    },
     selectGoodChange(item) {
       item.selected = !item.selected
     },

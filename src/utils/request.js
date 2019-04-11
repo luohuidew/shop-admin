@@ -65,10 +65,10 @@ service.interceptors.response.use(
       }
       if (res.code === 1002 || res.code === 1003) { // 店铺id 错误或没有
         MessageBox.confirm(
-          '您可能还没有店铺，无法访问',
-          '提示',
+          'You may not have a shop or the operation is not standardized',
+          'Back Home',
           {
-            confirmButtonText: '确定',
+            confirmButtonText: 'confirm',
             type: 'warning'
           }
         ).then(() => {
