@@ -50,7 +50,7 @@
                     <span v-for="tag in item.tag_names">{{ tag }}</span>
                   </div>
                   <div class="price">
-                    ${{ item.alone_price }}
+                    ${{ item.market_price }}
                   </div>
                   <div class="btn">
                     <el-button size="mini" type="primary" class="padding" @click="setTopDood(item)">{{ $t("goodsManage.good_set_top") }}</el-button>
@@ -110,7 +110,7 @@ export default {
     return {
       storeState: getStoreState(),
       loadingGood: false,
-      tabPosition: 'noready',
+      tabPosition: 'Already',
       goodsListEd: [], // 已发布商品列表
       goodsListNo: [], // 未发布商品列表
       goodsList: [],
@@ -141,13 +141,11 @@ export default {
     }
   },
   created() {
-    if (this.$route.query.down === 2) {
-      // this.initData({ down: 2 })
-      this.tabPosition = 'Already'
-    } else {
-      this.getGoodSize() // 获取已发布商品的数量
-      this.initData({ down: 1 }) //  未发布
+    if (this.$route.query.down === 1) {
+      this.tabPosition = 'noready' // 会触发watch
+      this.getGoodSize()
     }
+    this.initData()
     this.shopInfo()
   },
   methods: {

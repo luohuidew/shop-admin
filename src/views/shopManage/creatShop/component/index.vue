@@ -17,9 +17,9 @@
       <el-form-item :label="$t('shopCreate.mobile_background_url')" >
         <imgUp :propURl = "form.mobile_background_url" @upload = "successImg($event, 'mobile_background_url')" />
       </el-form-item>
-      <el-form-item :label="$t('shopCreate.is_help_order')" >
-        <el-switch v-model="form.is_help_order" :active-value="1" :inactive-value="2" />
-      </el-form-item>
+      <!--<el-form-item :label="$t('shopCreate.is_help_order')" >-->
+        <!--<el-switch v-model="form.is_help_order" :active-value="1" :inactive-value="2" />-->
+      <!--</el-form-item>-->
       <el-form-item :label="$t('shopCreate.open_time')" >
         <el-date-picker v-model="form.open_time"  type="date" :placeholder="$t('shopCreate.select_val')"
           style="width: 100%;"/>
@@ -101,7 +101,7 @@ export default {
         logo: '',
         pc_background_url: '',
         mobile_background_url: '',
-        is_help_order: '',
+        is_help_order: 2,
         open_time: '',
         inns_url: '',
         facebook_url: '',

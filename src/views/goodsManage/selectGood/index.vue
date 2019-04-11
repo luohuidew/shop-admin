@@ -29,7 +29,7 @@
                   <span>{{ item.tag_names[0] }}</span>
                 </div>
                 <div class="price">
-                  ${{ item.alone_price }}
+                  ${{ item.market_price }}
                 </div>
               </div>
               <div class="right">
@@ -221,7 +221,7 @@ export default {
       if (allId.length === 0) {
         this.$message({
           type: 'info',
-          message: '请先选择商品'
+          message: 'Please choose the goods first.'
         })
         return
       }
@@ -236,10 +236,10 @@ export default {
         // this.serch(this.serchCache)
         this.$message({
           type: 'success',
-          message: '商品添加成功'
+          message: 'Add success'
         })
         this.butLoadingPub = false
-        this.$router.push({ name: 'pubGood' })
+        this.$router.push({ name: 'pubGood', query: { down: 1 }})
       }) .catch(() => {
         this.butLoadingPub = false
       })

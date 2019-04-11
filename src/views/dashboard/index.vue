@@ -56,14 +56,14 @@ export default {
     openShop() {
       APIcreateShop.releaseStore({ store_id: getStoreId() }).then(res => {
         this.$message({
-          message: '店铺开启成功，去往我的店铺',
+          message: 'Successful opening of the shop, go to my shop',
           type: 'success'
         })
         this.$router.push({ name: 'pubGood' })
       })
     },
     goShop() {
-      this.$router.push({ name: 'pubGood', query: { down: 2 }})
+      this.$router.push({ name: 'pubGood' })
     },
     creatShop() {
       this.$router.push({ name: 'creatShop' })
