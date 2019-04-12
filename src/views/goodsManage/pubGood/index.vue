@@ -96,7 +96,7 @@
           {{ `https://www.weget.com/store?store_id=${StoreId}` }}
         </a>
         <br>
-        {{ $t("goodsManage.Publish_income") }}
+        <span v-if="!shopPay">{{ $t("goodsManage.Publish_income") }}</span>
       </span>
       <span slot="footer" class="dialog-footer">
         <el-button v-if="!shopPay" type="primary" @click="addMoneyInfo">{{ $t("goodsManage.go_add") }}</el-button>
@@ -154,7 +154,7 @@ export default {
     }
   },
   created() {
-    if (process.env.NODE_ENV === 'production') {
+    if (process.env.BASE_API.indexOf('pzjhw.com:8088') === -1) {
       this.isDevnodeEnv = false
     }
     if (this.$route.query.down === 1) {
