@@ -87,9 +87,19 @@
       :visible.sync="dialogPusVisible"
       :title="$t('goodsManage.Publish_goods')"
       width="30%">
-      <span class="dialog-cotent">{{ $t("goodsManage.Publish_succee") }}</span>
+      <span class="dialog-cotent">
+        {{ $t("goodsManage.Publish_succee") }}<br>
+        <a v-if="isDevnodeEnv" :href="`http://www.middleware.weget.com/store?store_id=${StoreId}`" target="_blank">
+          {{ `http://www.middleware.weget.com/store?store_id=${StoreId}` }}
+        </a>
+        <a v-else :href="`https://www.weget.com/store?store_id=${StoreId}`" target="_blank">
+          {{ `https://www.weget.com/store?store_id=${StoreId}` }}
+        </a>
+        <br>
+        {{ $t("goodsManage.Publish_income") }}
+      </span>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="addMoneyInfo">{{ $t("goodsManage.go_add") }}</el-button>
+        <el-button v-if="!shopPay" type="primary" @click="addMoneyInfo">{{ $t("goodsManage.go_add") }}</el-button>
         <el-button type="primary" @click="dialogPusVisible = false">{{ $t("goodsManage.close") }}</el-button>
       </span>
     </el-dialog>
@@ -108,6 +118,9 @@ export default {
   },
   data() {
     return {
+      shopPay: true, // 是否有支付账号
+      isDevnodeEnv: true,
+      StoreId: getStoreId(),
       storeState: getStoreState(),
       loadingGood: false,
       tabPosition: 'Already',
@@ -141,6 +154,9 @@ export default {
     }
   },
   created() {
+    if (process.env.NODE_ENV === 'production') {
+      this.isDevnodeEnv = false
+    }
     if (this.$route.query.down === 1) {
       this.tabPosition = 'noready' // 会触发watch
       this.getGoodSize()
@@ -156,7 +172,7 @@ export default {
     },
     shopInfo() {
       APIincome.storeStatistics({ store_id: getStoreId() }).then((res) => {
-        this.INFOSHOP = res.data
+        this.shopPay = res.data.pay
       })
     },
     timeSort() {
@@ -191,7 +207,7 @@ export default {
       APIcreateShop.setGoodTop(param).then((res) => {
         this.$message({
           type: 'success',
-          message: '置顶成功'
+          message: this.$t('goodsManage.Good_top_success')
         })
         this.initData()
       }).catch(() => {
@@ -205,7 +221,7 @@ export default {
       APIcreateShop.deleteGood(param).then((res) => {
         this.$message({
           type: 'success',
-          message: '删除成功'
+          message: this.$t('goodsManage.Good_delete_success')
         })
         this.initData(this.CACHEOBJ)
       }).catch(() => {
@@ -252,11 +268,12 @@ export default {
     },
     pubgoods() {
       APIcreateShop.releaseStore({ store_id: getStoreId() }).then((res) => {
-        if (this.INFOSHOP.pay) {
+        if (this.shopPay) {
           this.$message({
             type: 'success',
             message: '发布成功'
           })
+          this.dialogPusVisible = true
           this.initData(this.CACHEOBJ)
         } else {
           this.dialogPusVisible = true
@@ -423,6 +440,12 @@ export default {
   }
 .select-container .dialog-cotent {
   line-height: 30px;
+  display: inline-block;
+  margin-left: 30px;
+  width: 100%;
+  a {
+    color: #409EFF;
+  }
 }
 </style>
 

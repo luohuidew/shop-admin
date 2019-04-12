@@ -148,8 +148,11 @@ export default {
     h5_divice: 'Mobile device',
     go_back: 'go back',
     Publish_goods: 'Publish goods',
-    Publish_succee: 'Congratulations! You just launched your store! Please complete your payment information to get paid',
+    Publish_succee: 'Congratulations! You just launched your store! Click to view the store',
+    Publish_income: 'Please complete your payment information to get paid',
     go_add: 'Fill in',
+    Good_top_success: 'Top success',
+    Good_delete_success: 'Delete successful',
     close: 'Close'
   },
   incomeManage: {

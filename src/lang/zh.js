@@ -155,8 +155,11 @@ export default {
     h5_divice: '移动端',
     go_back: '返回',
     Publish_goods: '发布商品',
-    Publish_succee: '恭喜您，发布成功，可到App或者pc端查看填写收款信息，有助于您的收款',
+    Publish_succee: '恭喜您，发布成功，点击链接可直达店铺',
+    Publish_income: '填写收款信息，有助于您的收款',
     go_add: '去填写',
+    Good_top_success: '置顶成功',
+    Good_delete_success: '删除成功',
     close: '关闭'
   },
   incomeManage: {
