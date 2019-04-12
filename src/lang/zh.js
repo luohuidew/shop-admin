@@ -177,6 +177,10 @@ export default {
     income_info: '每个月可以提交一次结算申请，我们将会在7天内给您打款。如有问题，您可联系info@weget.com',
     apply_but: '申请结算',
     Unable: '您的可领取收益为0，没法为您结算',
-    Close: '关闭'
+    Close: '关闭',
+    pay_pal_email: '请输入PayPal账户邮箱',
+    agin_pal_email: '请再次输入PayPal账户邮箱',
+    confirm: '确定',
+    cancel: '取消'
   }
 }

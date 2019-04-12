@@ -47,13 +47,13 @@
       <div class="dialog-wrap">
         <el-form ref="paypalForm" :rules="paypalFormRules" :model="paypalForm" label-position="top" label-width="100px" >
           <el-form-item
-            label="请输入PayPal账户邮箱"
+            :label="$t('incomeManage.pay_pal_email')"
             prop="email"
           >
             <el-input v-model="paypalForm.email" type="text" autocomplete="off"/>
           </el-form-item>
           <el-form-item
-            label="请再次输入PayPal账户邮箱*"
+            :label="$t('incomeManage.agin_pal_email')"
             prop="checkemail"
           >
             <el-input v-model="paypalForm.checkemail" type="text" autocomplete="off"/>
@@ -61,8 +61,8 @@
         </el-form>
       </div>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="submitForm('paypalForm')">确 定</el-button>
-        <el-button @click="resetForm('paypalForm')">取 消</el-button>
+        <el-button type="primary" @click="submitForm('paypalForm')">{{ $t('incomeManage.confirm') }}</el-button>
+        <el-button @click="resetForm('paypalForm')">{{ $t('incomeManage.cancel') }}</el-button>
       </span>
     </el-dialog>
     <el-dialog

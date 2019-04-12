@@ -170,6 +170,10 @@ export default {
     income_info: 'The payment period is 30 days. The amount will be deposit into your account within 7 days after the payment period. Please contact info@weget.com if you have any questions.',
     apply_but: 'Request for deposit',
     Unable: 'Sorry! Your available credit for deposit is 0.',
-    Close: 'Close'
+    Close: 'Close',
+    pay_pal_email: 'Please enter PayPal account mailbox',
+    agin_pal_email: 'Please enter email PayPal account again',
+    confirm: 'Confirm',
+    cancel: 'Cancel'
   }
 }
